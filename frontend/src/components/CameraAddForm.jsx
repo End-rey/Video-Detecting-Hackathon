@@ -16,10 +16,11 @@ const CameraAddForm = ({add}) => {
 
 
   const [error, setError] = useState('')
+  const [visible, setVisible] = useState(false)
 
 
-  const addNewUrl = (e) => {
-    e.preventDefault()
+  const addNewUrl = () => {
+
     const newUrl = {
       ...cameraUrl
     }
@@ -30,6 +31,7 @@ const CameraAddForm = ({add}) => {
       if (object === '') {
 
         setError('Заполните все обязательные поля!')
+        setVisible(true)
         return error
 
 
@@ -38,7 +40,9 @@ const CameraAddForm = ({add}) => {
 
 
     setError('')
+    setVisible(false)
     add(newUrl)
+
     setCameraUrl({
       login: '',
       password: '',
@@ -111,7 +115,11 @@ const CameraAddForm = ({add}) => {
         <MyButton onClick={addNewUrl}>
           Добавить камеру
         </MyButton>
-        <h1 style={{color: 'red', display: 'inline', paddingLeft: '15px'}}>{error}</h1>
+        {visible
+        ? <h1 style={{color: 'red', display: 'inline', paddingLeft: '15px'}}>{error}</h1>
+        : ''
+        }
+
       </form>
   );
 };
