@@ -1,11 +1,11 @@
 import React, {useState} from "react";
 import './styles/App.css'
 import Navbar from "./components/UI/navbar/Navbar";
-import CameraComponent from "./components/CameraComponent";
+
 import CameraComponentsList from "./components/CameraComponentsList";
 import MyButton from "./components/UI/button/MyButton";
 import MyModal from "./components/modal/MyModal";
-import CameraAddForm from "./components/CameraAddForm";
+import CameraAddForm from "./components/cameraAddForm/CameraAddForm";
 
 
 function App() {

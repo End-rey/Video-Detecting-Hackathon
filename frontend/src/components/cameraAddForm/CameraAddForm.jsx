@@ -1,9 +1,28 @@
 import React, {useState} from 'react';
-import MyInput from "./UI/input/MyInput";
-import MyButton from "./UI/button/MyButton";
+import MyInput from "../UI/input/MyInput";
+import MyButton from "../UI/button/MyButton";
+import cl from './addForm.module.css'
 
 const CameraAddForm = ({add}) => {
 
+
+  const ipRegex = /^(\d{1,3}\.){3}\d{1,3}$/;
+
+
+
+  const checkIp = (input) => {
+    if (!ipRegex.test(input)) {
+      setStatus(false)
+    } else {
+      setStatus(true)
+    }
+  }
+
+  const [status, setStatus] = useState(true)
+
+  const borderStyle =  {
+    border: !status ? '1px solid red' : ''
+  }
 
   const [cameraUrl, setCameraUrl] = useState({
     login: '',
@@ -19,8 +38,8 @@ const CameraAddForm = ({add}) => {
   const [visible, setVisible] = useState(false)
 
 
-  const addNewUrl = () => {
-
+  const addNewUrl = (e) => {
+    e.preventDefault()
     const newUrl = {
       ...cameraUrl
     }
@@ -30,13 +49,22 @@ const CameraAddForm = ({add}) => {
 
       if (object === '') {
 
-        setError('Заполните все обязательные поля!')
+        setError('Заполните все поля!')
         setVisible(true)
         return error
-
-
       }
+
+
     }
+    if (!status) {
+
+      setError('Введите корректный IP')
+      setVisible(true)
+      return error
+
+
+    }
+
 
 
     setError('')
@@ -59,66 +87,82 @@ const CameraAddForm = ({add}) => {
       <form>
 
         <MyInput
+
+            autoComplete="off"
             required
-            name='login'
+
             value={cameraUrl.login}
             onChange={e => setCameraUrl({...cameraUrl, login: e.target.value})}
             type='text'
             placeholder='Введите логин'
         />
         <MyInput
+
+            autoComplete="off"
             required
-            name='password'
+
             value={cameraUrl.password}
             onChange={e =>
                 setCameraUrl({...cameraUrl, password: e.target.value})
+
             }
             type='text'
             placeholder='Введите пароль'
         />
         <MyInput
-            required
-            name='IP'
-            value={cameraUrl.IP}
-            onChange={e =>
-                setCameraUrl({...cameraUrl, IP: e.target.value})
 
+            autoComplete="off"
+            required
+
+            value={cameraUrl.IP}
+            onChange={e => {
+              setCameraUrl({...cameraUrl, IP: e.target.value})
+              checkIp(e.target.value)
 
             }
+            }
+            style={borderStyle}
             type='text'
             placeholder='Введите IP'
         />
         <MyInput
+
+            autoComplete="off"
             required
-            name='port'
+
             value={cameraUrl.port}
             onChange={e => setCameraUrl({...cameraUrl, port: e.target.value})}
-            type='text'
+            type='number'
             placeholder='Введите port'
         />
         <MyInput
+            autoComplete="off"
             required
-            name='channelNumber'
+
             value={cameraUrl.channelNo}
             onChange={e => setCameraUrl({...cameraUrl, channelNo: e.target.value})}
-            type='text'
+            type='number'
             placeholder='Введите номер канала'
         />
         <MyInput
+            autoComplete="off"
             required
-            name='streamNumber'
+
             value={cameraUrl.typeNo}
             onChange={e => setCameraUrl({...cameraUrl, typeNo: e.target.value})}
-            type='text'
+            type='number'
             placeholder='Введите номер потока'
         />
-        <MyButton onClick={addNewUrl}>
-          Добавить камеру
-        </MyButton>
-        {visible
-        ? <h1 style={{color: 'red', display: 'inline', paddingLeft: '15px'}}>{error}</h1>
-        : ''
-        }
+        <div className={cl.wrapper}>
+          <MyButton type="button" onClick={addNewUrl}>
+            Добавить камеру
+          </MyButton>
+          {visible
+              ? <h1 className={cl.errorMessage} >{error}</h1>
+              : ''
+          }
+        </div>
+
 
       </form>
   );
