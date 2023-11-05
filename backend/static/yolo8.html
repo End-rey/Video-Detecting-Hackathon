@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="UTF-8" />
+    <title>Видео детекция с камеры</title>
+  </head>
+  <body>
+
+    <h1>Live Video Feed</h1>
+    <button onclick="detectVideo()">Видео детекция c камеры</button>
+    <img id="video-feed" src="" alt="Live Video Feed" style="display: none;"/>
+    <script>
+      async function detectVideo() {
+        const videoFeed = document.getElementById("video-feed");
+        const videoUrl = "/videoCamera";
+        videoFeed.style.display = "block";
+
+        const updateVideoFeed = () => {
+          videoFeed.src = videoUrl;
+        };
+
+        // Update the video feed periodically (e.g., every 100 milliseconds).
+        setInterval(updateVideoFeed, 100);
+      }
+    </script>
+  </body>
+</html>
