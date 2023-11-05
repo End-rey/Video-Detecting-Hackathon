@@ -9,7 +9,7 @@ import CameraAddForm from "./components/CameraAddForm";
 
 
 function App() {
-
+  const [ping, setPing] = useState(null)
 
   const [modal,setModal] = useState(false)
   const [cameraUrl, setCameraUrl] = useState([
@@ -31,11 +31,31 @@ function App() {
   }
 
 
+  function pingServer() {
+    fetch("http://localhost:8000/api/ping")
+      .then(response => {
+        if (!response.ok) {
+          throw new Error('Ошибка сети');
+        }
+        return response.json();
+      })
+      .then(data => {
+        console.log(data);
+        setPing(data.ping)
+      })
+      .catch(error => {
+        console.error('Ошибка:', error);
+      });
+  }
+
+
   return (
       <div className="App">
         <Navbar changeM={changeModalStatus} title={"Муниципальное образование города-курорта Анапа"}/>
 
         <CameraComponentsList cameraUrls={cameraUrl}/>
+        <button onClick={pingServer}>Ping</button>
+        {ping && <p>{ping}</p>}
         <MyModal visible={modal} setVisible={setModal}>
           <CameraAddForm add={addUrl}/>
         </MyModal>
