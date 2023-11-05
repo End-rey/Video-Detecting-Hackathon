@@ -1,0 +1,56 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+#root {
+    display:flex;
+    justify-content: center;
+}
+
+.App {
+    width: 100vw;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+
+.video__wrapper {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.camera-list-name {
+    font-size: 24px;
+    margin-bottom: 20px;
+}
+
+.camera-grid {
+    display: grid;
+    width: 90vw;
+    height: 80vh;
+    object-fit: contain;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    grid-template-rows: repeat(auto-fill, minmax(300px, 1fr)); /* 3 камеры в ряду, можно изменить на свой вкус */
+    gap: 5px;
+}
+
+.camera-container {
+    max-width: 100%;
+    object-fit: contain;
+    padding-bottom: 75%; /* 4:3 соотношение сторон (или другое по вашему выбору) */
+    position: relative;
+}
+
+iframe {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+}
+
+.error {
+    border: 1px solid red;
+}
