@@ -1,12 +1,35 @@
-import React, {useState} from 'react';
+import React, {useMemo, useState} from 'react';
 import MyInput from "../UI/input/MyInput";
 import MyButton from "../UI/button/MyButton";
 import cl from './addForm.module.css'
 
-const CameraAddForm = ({add}) => {
+const CameraAddForm = ({add, cameraUrl, setCameraUrl, modalStatus}) => {
 
 
   const ipRegex = /^(\d{1,3}\.){3}\d{1,3}$/;
+
+
+
+
+  const [status, setStatus] = useState(true)
+
+
+
+
+  const [error, setError] = useState('')
+  const [visible, setVisible] = useState(false)
+
+  const borderStyle =  {
+    border: !status ? '1px solid red' : ''
+  }
+
+  const clearMistakes = useMemo(() => {
+
+    if (!modalStatus) {
+      setError('')
+      setStatus(true)
+    }
+  },[modalStatus])
 
 
 
@@ -18,24 +41,7 @@ const CameraAddForm = ({add}) => {
     }
   }
 
-  const [status, setStatus] = useState(true)
 
-  const borderStyle =  {
-    border: !status ? '1px solid red' : ''
-  }
-
-  const [cameraUrl, setCameraUrl] = useState({
-    login: '',
-    password: '',
-    IP: '',
-    port: '',
-    channelNo: '',
-    typeNo: ''
-  })
-
-
-  const [error, setError] = useState('')
-  const [visible, setVisible] = useState(false)
 
 
   const addNewUrl = (e) => {
