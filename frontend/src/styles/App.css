@@ -46,7 +46,8 @@ body {
     height: 100%;
 
     /* object-fit: contain; */
-    grid-template-columns: repeat(3, minmax(200px, 1fr));
+    justify-content: center;
+    grid-template-columns: repeat(auto-fit, 33%);
     grid-template-rows: repeat(auto-fill, 1fr);
     gap: 5px;
 }
