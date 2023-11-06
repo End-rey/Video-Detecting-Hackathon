@@ -12,7 +12,7 @@
     <script>
       async function detectVideo() {
         const videoFeed = document.getElementById("video-feed");
-        const videoUrl = "/videoCamera";
+        const videoUrl = "/api/videoCamera?url=" + encodeURIComponent("rtsp://admin:A1234567@188.170.176.190:8031/Streaming/Channels/101?transportmode=unicast&profile=Profile_1");
         videoFeed.style.display = "block";
 
         const updateVideoFeed = () => {

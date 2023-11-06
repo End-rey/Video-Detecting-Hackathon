@@ -1,10 +1,12 @@
 import io
 import cv2
-from fastapi import FastAPI, Response
-from fastapi.responses import StreamingResponse
+from fastapi import FastAPI, Request, Response
+from fastapi.responses import HTMLResponse, StreamingResponse
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi import UploadFile
+from fastapi.templating import Jinja2Templates
 import numpy as np
+import urllib.parse
 
 from ultralytics import YOLO
 
@@ -23,6 +25,12 @@ app.add_middleware(
 model = YOLO('model/yolov8n.pt')
 model.cpu()
 
+templates = Jinja2Templates(directory="static")
+
+@app.get("/", response_class=HTMLResponse)
+def read_root(request: Request):
+    return templates.TemplateResponse("yolo8.html", context={"request": request})
+
 @app.post("/api/image")
 async def image_detect(file: UploadFile):
     content = await file.read()
@@ -37,26 +45,34 @@ async def image_detect(file: UploadFile):
 # Function to capture video frames from the webcam
 def video_capture(rtcp_url):
     cap = cv2.VideoCapture(rtcp_url)
+    cap.set(cv2.CAP_PROP_FRAME_WIDTH, 640)
+    cap.set(cv2.CAP_PROP_FRAME_HEIGHT, 480)
+    cap.set(cv2.CAP_PROP_FPS, 30)
+
     while cap.isOpened():
         ret, frame = cap.read()
         if not ret:
             break
 
-        if frame.shape[0] >= 480:
-            frame = cv2.resize(frame, (640, 480))
+        # if frame.shape[0] >= 480:
+        #     frame = cv2.resize(frame, (640, 480))
 
         results = model(frame)
 
-        annotated_frame = results[0].plot()
+        frame = results[0].plot()
 
         frame_with_boxes_bytes = cv2.imencode(
-            '.jpg', annotated_frame)[1].tobytes()
+            '.jpg', frame)[1].tobytes()
 
         yield (b"--frame\r\nContent-Type: image/jpeg\r\n\r\n" + frame_with_boxes_bytes + b"\r\n")
 
 
 @app.get("/api/videoCamera")
-async def get_video_feed(rtcp_url: str):
+async def get_video_feed(url: str):
+    rtcp_url = urllib.parse.unquote(url)
+    # request_body = await request.json()
+    # rtcp_url = request_body.get("rtcp_url")
+
     return StreamingResponse(video_capture(rtcp_url), media_type="multipart/x-mixed-replace; boundary=frame")
 
 
