@@ -4,31 +4,34 @@
     box-sizing: border-box;
 }
 
-
-
+html,
+body {
+    height: 100%;
+}
 
 #root {
-    display:flex;
+    display:block;
     justify-content: center;
-    height: 100vh;
-
+    height: 100%;
+    background: antiquewhite;
 }
 
 .App {
-
-    width: 100vw;
-    display: flex;
-    flex-direction: column;
+    width: 100%;
     align-items: center;
-    background-color: antiquewhite;
-
+    font-family: sans-serif;
+    text-align: center;
+    margin: 0 auto;
+    height: 100%;
 }
 
 
 .video__wrapper {
     display: flex;
+    position: relative;
     flex-direction: column;
     align-items: center;
+    height: 30%;
 }
 
 .camera-list-name {
@@ -38,26 +41,28 @@
 
 .camera-grid {
     display: grid;
-    width: 90vw;
-    height: 80vh;
+    position: relative;
+    width: 100%;
+    height: 100%;
 
-    object-fit: contain;
-    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-    grid-template-rows: repeat(auto-fill, minmax(300px, 1fr)); /* 3 камеры в ряду, можно изменить на свой вкус */
+    /* object-fit: contain; */
+    grid-template-columns: repeat(3, minmax(200px, 1fr));
+    grid-template-rows: repeat(auto-fill, 1fr);
     gap: 5px;
 }
 
 .camera-container {
-    max-width: 100%;
-    object-fit: contain;
-    padding-bottom: 50%; /* 4:3 соотношение сторон (или другое по вашему выбору) */
+    /* width: 100%; */
+    /* height: 100%; */
     position: relative;
+    /* object-fit: contain; */
+    /* padding-bottom: 50%; */
 }
 
 iframe {
-    position: absolute;
-    max-width: 100%;
-
+    position: relative;
+    /* max-width: 100%; */
+    /* height: fit-content; */
 }
 
 .error {

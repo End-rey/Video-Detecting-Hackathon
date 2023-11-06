@@ -5,6 +5,8 @@ import CameraComponentsList from "./components/CameraComponentsList";
 import MyModal from "./components/modal/MyModal";
 import CameraAddForm from "./components/cameraAddForm/CameraAddForm";
 import NoCamera from "./components/noCamera/NoCamera";
+import ImageDetect from "./components/ImageDetect/ImageDetect";
+import VideoDetect from "./components/VideoDetect/VideoDetect";
 
 function App() {
   const [ping, setPing] = useState(null);
@@ -12,8 +14,8 @@ function App() {
   const [modal,setModal] = useState(false)
   const [cameraList, setCameraList] = useState([
     'http://webcam.anapa-official.ru:9999/player/?key=q1322qefasfrttg&cam=efb90850-93df-4bbb-ac51-9663342ee5b4',
-    'http://webcam.anapa-official.ru:9999/player/?key=q1322qefasfrttg&cam=965aa513-a27d-4078-92b4-3ff104bc0622',
-    'https://rtsp.me/embed/i93R6hin/?'
+    // 'http://webcam.anapa-official.ru:9999/player/?key=q1322qefasfrttg&cam=965aa513-a27d-4078-92b4-3ff104bc0622',
+    // 'https://rtsp.me/embed/i93R6hin/?'
 ])
   const [cameraUrl, setCameraUrl] = useState({
     login: '',
@@ -82,6 +84,9 @@ function App() {
         <button onClick={pingServer}>Ping</button>
 
         {ping && <p>{ping}</p>}
+
+        <ImageDetect/>
+        <VideoDetect/>
         <MyModal cleanInput={cleanInput} visible={modal} setVisible={setModal}>
           <CameraAddForm modalStatus={modal}  cameraUrl={cameraUrl} setCameraUrl={setCameraUrl} add={addUrl}/>
         </MyModal>

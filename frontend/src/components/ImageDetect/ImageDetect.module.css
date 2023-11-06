@@ -1,0 +1,97 @@
+.imageDetect {
+    display: flex;
+    margin: 0 auto;
+    margin-top: 2vh;
+    gap: 10vh;
+    position: relative;
+    height: 20%;
+    width: 90%;
+    justify-content: center;
+}
+
+.imageDetect-uploadSpan {
+    display: block;
+    /* width: 200px; */
+    height: 100%;
+    position: relative;
+    background-color: #4676d7;
+    border-radius: 15px;
+    justify-content: center;
+    align-items: center;
+    /* flex-shrink: 0; */
+    padding: 0;
+    cursor: pointer;
+    overflow: hidden;
+}
+
+.imageDetect-uploadSpan:not(:last-child) {
+    margin-right: 1em;
+}
+
+.imageDetect-uploadSpan:after {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(255, 255, 255, 0.5);
+    opacity: 0;
+}
+
+.imageDetect-uploadSpan:before {
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    top: 0;
+    opacity: 0;
+    z-index: 1;
+    background: rgba(0, 0, 0, 0);
+    content: "";
+    -webkit-transition: all 0.2s ease-out;
+    -moz-transition: all 0.2s ease-out;
+    transition: all 0.2s ease-out;
+}
+
+.imageDetect-uploadSpan:hover:before,
+.imageDetect-uploadSpan:hover:after {
+    opacity: 1;
+}
+
+
+.imageDetect-previewImage {
+    width: 100%;
+    height: 100%;
+}
+
+.imageDetect-uploadFile {
+    text-align: center;
+    margin: auto;
+    left: 0;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    z-index: 3;
+    position: absolute;
+    display: block;
+}
+
+.imageDetect-button {
+    position: relative;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 10vh;
+    height: 10vh;
+    border-radius: 50%;
+    border: none;
+    background-color: #fff;
+    box-shadow: 0 4px 8px rgb(0 0 0 / 20%);
+    font-size: 1.2rem;
+    cursor: pointer;
+}
+
+.imageDetect-detectImage {
+    height: 100%;
+    width: fit-content;
+}
