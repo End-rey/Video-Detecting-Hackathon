@@ -20,7 +20,7 @@ const ImageDetect = () => {
     formData.append('file', selectedFile);
 
     try {
-      const response = await fetch('http://localhost:8000/api/image', {
+      const response = await fetch('/api/image', {
         method: 'POST',
         body: formData,
       });
