@@ -13,7 +13,7 @@ const VideoDetect = () => {
 
   const handleTextButtonClick = async () => {
     if (isValidURL(inputText)) {
-        const videoUrl = "http://localhost:8000/api/videoCamera?url=" + encodeURIComponent(inputText);
+        const videoUrl = "/api/videoCamera?url=" + encodeURIComponent(inputText);
 
         const updateVideoFeed = () => {
           setCameraUrl(videoUrl);
