@@ -1,16 +1,13 @@
-import React, {useState} from "react";
-import './styles/App.css'
+import React, { useState } from "react";
+import "./styles/App.css";
 import Navbar from "./components/UI/navbar/Navbar";
-
 import CameraComponentsList from "./components/CameraComponentsList";
-import MyButton from "./components/UI/button/MyButton";
 import MyModal from "./components/modal/MyModal";
 import CameraAddForm from "./components/cameraAddForm/CameraAddForm";
 import NoCamera from "./components/noCamera/NoCamera";
 
-
 function App() {
-  const [ping, setPing] = useState(null)
+  const [ping, setPing] = useState(null);
 
   const [modal,setModal] = useState(false)
   const [cameraList, setCameraList] = useState([
@@ -36,6 +33,7 @@ function App() {
 
 
 
+
   const changeModalStatus = (modal) => {
     setModal(true)
   }
@@ -56,25 +54,22 @@ function App() {
   }
 
 
-
-
   function pingServer() {
-    fetch("http://localhost:8000/api/ping")
-      .then(response => {
+    fetch("/api/ping")
+      .then((response) => {
         if (!response.ok) {
-          throw new Error('Ошибка сети');
+          throw new Error("Ошибка сети");
         }
         return response.json();
       })
-      .then(data => {
+      .then((data) => {
         console.log(data);
-        setPing(data.ping)
+        setPing(data.ping);
       })
-      .catch(error => {
-        console.error('Ошибка:', error);
+      .catch((error) => {
+        console.error("Ошибка:", error);
       });
   }
-
 
   return (
       <div className="App">
@@ -92,8 +87,7 @@ function App() {
         </MyModal>
 
       </div>
-
-  )
+  );
 }
 
 export default App;

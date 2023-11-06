@@ -1,24 +1,11 @@
 version: '3.8'
 
 services:
-  frontend:
-    build:
-      context: ./frontend
-      dockerfile: Dockerfile
-    ports:
-      - "3000:3000"
-
-  backend:
-    build:
-      context: ./backend
-      dockerfile: Dockerfile
-    ports:
-      - "8000:8000"
-
   nginx:
-    build: 
-      context: ./nginx
-      dockerfile: Dockerfile
+    # build: 
+    #   context: ./nginx
+    #   dockerfile: Dockerfile
+    image: nginx:latest
     ports:
       - "80:80"
     volumes:
@@ -26,3 +13,26 @@ services:
     depends_on:
       - frontend
       - backend
+    networks:
+      - mynetwork
+      
+  frontend:
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile
+    expose:
+      - "3000"
+    networks:
+      - mynetwork
+
+  backend:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+    expose:
+      - "8000"
+    networks:
+      - mynetwork
+
+networks:
+  mynetwork:
