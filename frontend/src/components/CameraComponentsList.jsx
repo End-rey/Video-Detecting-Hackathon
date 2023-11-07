@@ -1,5 +1,5 @@
 import React from 'react';
-import CameraComponent from "./CameraComponent";
+import CameraComponent from "./CameraComponent/CameraComponent";
 
 const CameraComponentsList = ({cameraUrls}) => {
   return (

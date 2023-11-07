@@ -6,7 +6,7 @@ import MyModal from "./components/modal/MyModal";
 import CameraAddForm from "./components/cameraAddForm/CameraAddForm";
 import NoCamera from "./components/noCamera/NoCamera";
 import ImageDetect from "./components/ImageDetect/ImageDetect";
-import VideoDetect from "./components/VideoDetect/VideoDetect";
+
 
 function App() {
   const [ping, setPing] = useState(null);
@@ -17,14 +17,7 @@ function App() {
     // 'http://webcam.anapa-official.ru:9999/player/?key=q1322qefasfrttg&cam=965aa513-a27d-4078-92b4-3ff104bc0622',
     // 'https://rtsp.me/embed/i93R6hin/?'
 ])
-  const [cameraUrl, setCameraUrl] = useState({
-    login: '',
-    password: '',
-    IP: '',
-    port: '',
-    channelNo: '',
-    typeNo: ''
-  })
+  const [cameraUrl, setCameraUrl] = useState('')
   const addUrl = (newUrl) => {
     setCameraList([...cameraList,
       `rtsp://${newUrl.login}:${newUrl.password}@${newUrl.IP}:${newUrl.port}/cam/realmonitor?channel=${newUrl.channelNo}&subtype=${newUrl.typeNo}`
@@ -43,14 +36,7 @@ function App() {
   const cleanInput = () => {
     console.log('working')
 
-      setCameraUrl({
-        login: '',
-        password: '',
-        IP: '',
-        port: '',
-        channelNo: '',
-        typeNo: ''
-      })
+      setCameraUrl('')
 
 
   }
@@ -85,10 +71,11 @@ function App() {
 
         {ping && <p>{ping}</p>}
 
-        <ImageDetect/>
-        <VideoDetect/>
+
+
         <MyModal cleanInput={cleanInput} visible={modal} setVisible={setModal}>
-          <CameraAddForm modalStatus={modal}  cameraUrl={cameraUrl} setCameraUrl={setCameraUrl} add={addUrl}/>
+          <CameraAddForm modalStatus={modal}  setCameraList={setCameraList} cameraList={cameraList}></CameraAddForm>
+
         </MyModal>
 
       </div>
