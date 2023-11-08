@@ -39,7 +39,7 @@ const Video = () => {
         </MyModal>
         <div style={{marginTop: '10vh'}}>
           {videoUrl
-              ? <video style={{alignSelf: "center"}} height='auto' loop autoPlay muted src={videoUrl} width="400" controls/>
+              ? <video  height='auto' loop autoPlay muted src={videoUrl} width="400" controls/>
               : <h1> Видео пока нет!</h1>
           }
         </div>
