@@ -3,14 +3,14 @@ import cl from "./VideoDetect.module.css";
 
 const VideoDetect = ({cameraUrl, setCameraUrl}) => {
   const [videoUrl, setVideoUrl] = useState("");
-  const [error, setError] = useState(null);
+  // const [error, setError] = useState(null);
   const [ws, setWs] = useState(null);
 
   useEffect(() => {
-    setError(null);
+    // setError(null);
     console.log(cameraUrl);
     if (!isValidURL(cameraUrl)) {
-      setError("Invalid URL");
+      // setError("Invalid URL");
       return 0;
     }
 
@@ -47,7 +47,7 @@ const VideoDetect = ({cameraUrl, setCameraUrl}) => {
 
     socket.onerror = (error) => {
       console.log(error);
-      setError(error);
+      // setError(error);
     };
 
     return () => socket.close()
@@ -55,7 +55,7 @@ const VideoDetect = ({cameraUrl, setCameraUrl}) => {
 
   return (
     <div className={cl["videoDetect"]}>
-      {error && <p>{error}</p>}
+      {/* {error && <p>{error}</p>} */}
       {videoUrl && (
         <div className={cl["videoDetect-cameraDiv"]}>
           <button

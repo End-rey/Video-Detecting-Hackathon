@@ -69,9 +69,9 @@ function Camera() {
           </div>
         </Navbar> 
         {cameraUrl !== null
-            // ? <CameraComponentsList cameraUrls={cameraUrl}/>
-            ? <VideoDetect cameraUrl={cameraUrl} setCameraUrl={setCameraUrl}/>
-            : <NoCamera/>
+            //  ? <CameraComponentsList cameraUrls={cameraUrl}/>
+            ? (<VideoDetect cameraUrl={cameraUrl} setCameraUrl={setCameraUrl}/>)
+            : (<NoCamera/>)
         }
 
         <button onClick={pingServer}>Ping</button>
