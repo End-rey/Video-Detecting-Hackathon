@@ -14,13 +14,13 @@
     font-size: large;
 }
 
-.videoDetect-sendUrlButton {
+.videoDetect-Button {
     margin-left: 3vh;
     height: 3vh;
     width: 5vh;
 }
 
-.videoDetect-camera {
+.videoDetect-cameraDiv {
     display: block;
     position: relative;
     width: 100%;
@@ -30,4 +30,5 @@
 .videoDetect-video {
     position: relative;
     height: 100%;
+    width: fit-content;
 }

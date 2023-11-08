@@ -4,6 +4,9 @@ fastapi
 jinja2
 python-multipart
 
+# Camera
+av
+
 # ML --------------------------------------
 ultralytics
 matplotlib>=3.3.0
