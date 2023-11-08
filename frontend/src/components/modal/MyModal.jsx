@@ -9,7 +9,7 @@ const MyModal = ({children, ...props}) => {
   return (
       <div className={rootClasses.join(' ')} onClick={() => {
         props.setVisible(false)
-        props.cleanInput()
+
       }
 
       }>

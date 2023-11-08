@@ -5,10 +5,14 @@ import CameraComponentsList from "../components/CameraComponentsList";
 import MyModal from "../components/modal/MyModal";
 import CameraAddForm from "../components/cameraAddForm/CameraAddForm";
 import NoCamera from "../components/noCamera/NoCamera";
+import cl from "../components/UI/navbar/Navbar.module.css";
+import {Link} from "react-router-dom";
+import MyButton from "../components/UI/button/MyButton";
 
 
 
 function Camera() {
+  const title = 'Проект от VэЧипZи'
   const [ping, setPing] = useState(null);
 
   const [modal,setModal] = useState(false)
@@ -27,13 +31,7 @@ function Camera() {
     setModal(true)
   }
 
-  const cleanInput = () => {
-    console.log('working')
 
-
-
-
-  }
 
 
   function pingServer() {
@@ -57,7 +55,20 @@ function Camera() {
 
   return (
       <div className="App">
-        <Navbar changeM={changeModalStatus} title={"Муниципальное образование города-курорта Анапа"}/>
+        <Navbar>
+          <div className={cl.navbar_left}>
+            <img width='40 px' height='auto' src='https://www.anapa-official.ru/simai.data/image/logo/Coat_of_Arms_of_Anapa_(Krasnodar_krai).svg%20copy.png' alt=''/>
+            <h1>{title}</h1>
+          </div>
+          <div className={cl.navbar_right}>
+            <Link to='/'>Видео</Link>
+            <Link to='/camera'>Камеры</Link>
+            <MyButton onClick={() => changeModalStatus()}>Добавить камеру</MyButton>
+            <MyButton>
+              Сменить тему
+            </MyButton>
+          </div>
+        </Navbar>
         {cameraUrl !== ''
             ? <CameraComponentsList cameraUrls={cameraUrl}/>
             : <NoCamera/>
@@ -69,7 +80,7 @@ function Camera() {
 
 
 
-        <MyModal cleanInput={cleanInput} visible={modal} setVisible={setModal}>
+        <MyModal visible={modal} setVisible={setModal}>
           <CameraAddForm cameraUrl={cameraUrl} setCameraUrl={setCameraUrl} modalStatus={modal} setModalStatus={setModal} setCameraList={setCameraList}></CameraAddForm>
 
         </MyModal>

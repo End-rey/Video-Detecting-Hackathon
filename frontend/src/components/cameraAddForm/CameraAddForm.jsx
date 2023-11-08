@@ -70,13 +70,6 @@ const CameraAddForm = ({...props}) => {
   },[props.modalStatus])
 
 
-
-
-
-
-
-
-
   return (
       <div className={cl.wrapper}>
         <h1>Введите ссылку!</h1>
