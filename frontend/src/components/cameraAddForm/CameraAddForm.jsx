@@ -7,19 +7,14 @@ import useInput from "../../hooks/useInput";
 const CameraAddForm = ({...props}) => {
 
 
-  const url = useInput('')
-  const [cameraURL, setCameraURL] = useState('')
-
-
-
-
-  const [status, setStatus] = useState(true)
-
-
-
-
+  const [inputText, setInputText] = useState('')
   const [error, setError] = useState('')
-  const [visible, setVisible] = useState(false)
+
+  const handleChangeText = (event) => {
+    const text = event.target.value;
+    setInputText(text);
+  };
+
 
 
   function isValidURL(url) {
@@ -33,14 +28,17 @@ const CameraAddForm = ({...props}) => {
 
 
 
-  const handleTextButtonClick =  (e) => {
+  const handleTextButtonClick = async (e) => {
     e.preventDefault()
-    if (isValidURL(url.value)) {
-      const videoUrl = "/api/videoCamera?url=" + encodeURIComponent(url.value);
-      props.setCameraList([...props.cameraList, videoUrl])
-      console.log(props.cameraList)
+    if (isValidURL(inputText)) {
+    const videoUrl = "http://localhost:8000/api/videoCamera?url=" + encodeURIComponent(inputText);
+
+
+      props.setModalStatus(false)
       const updateVideoFeed = () => {
-        setCameraURL(videoUrl)
+
+        props.setCameraUrl(videoUrl)
+
 
       };
 
@@ -49,14 +47,25 @@ const CameraAddForm = ({...props}) => {
       setInterval(updateVideoFeed, 1000);
     } else {
       setError("Invalid URL");
-      console.log(error)
+
     }
+
+
   };
+
+
 
   const clearMistakes = useMemo(() => {
 
+
     if (!props.modalStatus) {
       setError('')
+      setInputText('')
+
+
+
+
+
     }
   },[props.modalStatus])
 
@@ -69,34 +78,35 @@ const CameraAddForm = ({...props}) => {
 
 
   return (
-      <form>
+      <div className={cl.wrapper}>
+        <h1>Введите ссылку!</h1>
+        <form className={cl.formStyles}>
 
-        <MyInput
-            {...url}
-            className={cl["videoDetect-inputUrl"]}
-            type="text"
-        ></MyInput>
+          <MyInput
+              value={inputText}
+              onChange={handleChangeText}
+              className={cl["videoDetect-inputUrl"]}
+              type="text"
+          ></MyInput>
 
-        <div className={cl.wrapper}>
-          <MyButton
-              className={cl["videoDetect-sendUrlButton"]}
-              onClick={
-            handleTextButtonClick}
-          >
-            Send
-          </MyButton>
-          {visible
-              ? <h1 className={cl.errorMessage} >{error}</h1>
-              : ''
-          }
-        </div>
-        <div>
-          {error && <p>{error}</p>}
-        </div>
-
+          <div className={cl.wrapper}>
+            <MyButton
+                className={cl["videoDetect-sendUrlButton"]}
+                onClick={
+                  handleTextButtonClick}
+            >
+              Send
+            </MyButton>
+          </div>
+          <div>
+            {error && <h4 style={{color: 'red', marginTop: '5px'}}>{error}</h4>}
+          </div>
 
 
-      </form>
+
+        </form>
+      </div>
+
   );
 };
 

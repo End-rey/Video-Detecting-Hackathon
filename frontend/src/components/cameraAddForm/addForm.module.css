@@ -1,6 +1,7 @@
 .wrapper {
     display: flex;
-    gap: 10px;
+    flex-direction: column;
+    gap: 5px;
     align-items: center;
     margin-top: 5px;
 }
@@ -11,3 +12,8 @@
     color: red;
 }
 
+
+.formStyles {
+    position: relative;
+    width: 100%;
+}
