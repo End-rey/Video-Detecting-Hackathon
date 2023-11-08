@@ -1,0 +1,15 @@
+
+
+
+.videoDetectCamera {
+    display: block;
+    position: relative;
+    width: 100%;
+    height: 100%;
+}
+
+.videoDetectVideo {
+    position: relative;
+    height: 100%;
+    width: 100%;
+}

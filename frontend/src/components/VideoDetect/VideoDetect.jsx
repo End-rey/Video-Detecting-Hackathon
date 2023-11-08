@@ -39,7 +39,6 @@ const VideoDetect = () => {
     socket.onmessage = (message) => {
       console.log(`[message] Данные получены с сервера`);
       const imageData = message.data;
-      // console.log(imageData)
 
       setCameraUrl(`data:image/jpeg;base64,${imageData}`);
     };
@@ -99,13 +98,10 @@ const VideoDetect = () => {
 };
 
 function isValidURL(url) {
-  console.log("где");
   try {
-    console.log("проход");
     new URL(url);
     return true;
   } catch (error) {
-    console.log(error, "хейн");
     return false;
   }
 }

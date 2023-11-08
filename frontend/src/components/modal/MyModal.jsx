@@ -1,15 +1,15 @@
 import  React from 'react';
 import cl from './MyModal.module.css'
-const MyModal = ({children,visible,setVisible, cleanInput}) => {
+const MyModal = ({children, ...props}) => {
   const rootClasses = [cl.myModal]
-  if (visible){
+  if (props.visible){
     rootClasses.push(cl.myModal_active)
   }
 
   return (
       <div className={rootClasses.join(' ')} onClick={() => {
-        setVisible(false)
-        cleanInput()
+        props.setVisible(false)
+        props.cleanInput()
       }
 
       }>
