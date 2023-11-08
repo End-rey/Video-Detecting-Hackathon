@@ -4,6 +4,7 @@ import Video from "./pages/Video";
 import Camera from "./pages/Camera";
 import Error from './pages/Error'
 const App = () => {
+
   return (
       <BrowserRouter>
         <Routes>
