@@ -1,23 +1,22 @@
-import React from "react";
-import {BrowserRouter, Route, Routes} from "react-router-dom";
-import Camera from "./pages/Camera";
+import React from 'react';
+import {BrowserRouter, Navigate, Route, Routes} from 'react-router-dom'
 import Video from "./pages/Video";
-
-
-
-function App(){
+import Camera from "./pages/Camera";
+import Error from './pages/Error'
+const App = () => {
 
   return (
       <BrowserRouter>
-
-
         <Routes>
-          <Route path='camera' element={<Camera/>}/>
-          <Route path='video' element={<Video/>}/>
+          <Route path='/' element={<Video/>}/>
+          <Route path='/camera' element={<Camera/>}/>
+          <Route path='/error' element={<Error/>}/>
+          <Route path='/*' element={<Navigate to='/' replace />}/>
         </Routes>
-
       </BrowserRouter>
-  )
-}
+
+
+  );
+};
 
 export default App;

@@ -33,6 +33,20 @@ const CameraAddForm = ({ ...props }) => {
     }
   };
 
+  const clearMistakes = useMemo(() => {
+
+
+    if (!props.modalStatus) {
+      setError('')
+      setInputText('')
+
+
+
+
+
+    }
+  },[props.modalStatus])
+
   return (
     <div className={cl.wrapper}>
       <h1>Введите ссылку!</h1>
