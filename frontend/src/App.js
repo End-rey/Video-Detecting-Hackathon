@@ -1,8 +1,7 @@
-import React, {useMemo, useState} from "react";
+import React from "react";
 import {BrowserRouter, Route, Routes} from "react-router-dom";
 import Camera from "./pages/Camera";
 import Video from "./pages/Video";
-import Navbar from "./components/UI/navbar/Navbar";
 
 
 

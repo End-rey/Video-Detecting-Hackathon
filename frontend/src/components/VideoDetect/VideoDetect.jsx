@@ -1,21 +1,15 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import cl from "./VideoDetect.module.css";
 
-const VideoDetect = () => {
-  const [cameraUrl, setCameraUrl] = useState("");
-  const [inputText, setInputText] = useState("");
+const VideoDetect = ({cameraUrl, setCameraUrl}) => {
+  const [videoUrl, setVideoUrl] = useState("");
   const [error, setError] = useState(null);
   const [ws, setWs] = useState(null);
 
-  const handleChangeText = (event) => {
-    const text = event.target.value;
-    setInputText(text);
-  };
-
-  const handleTextButtonClick = () => {
+  useEffect(() => {
     setError(null);
-    if (!isValidURL(inputText)) {
-      console.log(inputText);
+    console.log(cameraUrl);
+    if (!isValidURL(cameraUrl)) {
       setError("Invalid URL");
       return 0;
     }
@@ -26,13 +20,11 @@ const VideoDetect = () => {
       ws.close();
     }
 
-    const videoUrl = "ws://localhost:8000/api/videoCamera";
-
-    const socket = new WebSocket(videoUrl);
+    const socket = new WebSocket("ws://localhost:8000/api/videoCamera");
     setWs(socket);
 
     socket.onopen = () => {
-      socket.send(inputText);
+      socket.send(cameraUrl);
       console.log("[open] Соединение установлено");
     };
 
@@ -40,7 +32,7 @@ const VideoDetect = () => {
       console.log(`[message] Данные получены с сервера`);
       const imageData = message.data;
 
-      setCameraUrl(`data:image/jpeg;base64,${imageData}`);
+      setVideoUrl(`data:image/jpeg;base64,${imageData}`);
     };
 
     socket.onclose = function (event) {
@@ -57,30 +49,20 @@ const VideoDetect = () => {
       console.log(error);
       setError(error);
     };
-  };
+
+    return () => socket.close()
+  }, []);
 
   return (
     <div className={cl["videoDetect"]}>
-      <div>
-        <input
-          className={cl["videoDetect-inputUrl"]}
-          type="text"
-          onChange={handleChangeText}
-        ></input>
-        <button
-          className={cl["videoDetect-Button"]}
-          onClick={handleTextButtonClick}
-        >
-          Send
-        </button>
-      </div>
       {error && <p>{error}</p>}
-      {cameraUrl && (
+      {videoUrl && (
         <div className={cl["videoDetect-cameraDiv"]}>
           <button
             className={cl["videoDetect-Button"]}
             onClick={() => {
               ws.close();
+              setVideoUrl(null);
               setCameraUrl(null);
             }}
           >
@@ -88,7 +70,7 @@ const VideoDetect = () => {
           </button>
           <img
             className={cl["videoDetect-video"]}
-            src={cameraUrl}
+            src={videoUrl}
             alt="Live Video Feed"
           />
         </div>
