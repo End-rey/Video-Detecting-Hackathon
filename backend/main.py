@@ -1,14 +1,19 @@
+import base64
 import io
 import cv2
-from fastapi import FastAPI, Request, Response
+import av
+from fastapi import FastAPI, Request, Response, WebSocket
 from fastapi.responses import HTMLResponse, StreamingResponse
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi import UploadFile
 from fastapi.templating import Jinja2Templates
 import numpy as np
 import urllib.parse
+from fastapi import status, HTTPException
+from contextlib import closing
 
 from ultralytics import YOLO
+import websockets
 
 app = FastAPI(
     openapi_url="/api/restdocs",
@@ -23,7 +28,7 @@ app.add_middleware(
 )
 
 model = YOLO('model/yolov8n.pt')
-model.cpu()
+# model.cpu()
 
 templates = Jinja2Templates(directory="static")
 
@@ -43,37 +48,62 @@ async def image_detect(file: UploadFile):
     return StreamingResponse(io.BytesIO(frame_with_boxes_bytes), media_type="image/jpeg")
 
 # Function to capture video frames from the webcam
-def video_capture(rtcp_url):
-    cap = cv2.VideoCapture(rtcp_url)
-    cap.set(cv2.CAP_PROP_FRAME_WIDTH, 640)
-    cap.set(cv2.CAP_PROP_FRAME_HEIGHT, 480)
-    cap.set(cv2.CAP_PROP_FPS, 30)
+async def video_capture(rtsp_url, websocket):
+    # rtsp_url = "rtsp://admin:A1234567@188.170.176.190:8028/Streaming/Channels/101?transportmode=unicast&profile=Profile_1"
+    print(rtsp_url)
+    with closing(av.open(rtsp_url)) as container:
+        stream = container.streams.video[0]
+        stream.thread_type = "FRAME"
+        # stream.codec_context.skip_frame = "NONKEY"
 
-    while cap.isOpened():
-        ret, frame = cap.read()
-        if not ret:
-            break
+        stream.thread_count = 4
 
-        # if frame.shape[0] >= 480:
-        #     frame = cv2.resize(frame, (640, 480))
+        base_fps = stream.base_rate
+        desired_frame_rate = 5
+        i = 0
 
-        results = model(frame)
+        for frame in container.decode(stream):
+            if frame:
+                i += 1
+                if i == base_fps:
+                    i = 0
+                if i % (base_fps / desired_frame_rate) == 0:
+                    frame = frame.reformat(640, 480)
+                    image = frame.to_image()
 
-        frame = results[0].plot()
+                    # frame = np.array(image)
 
-        frame_with_boxes_bytes = cv2.imencode(
-            '.jpg', frame)[1].tobytes()
+                    results = model(image)
 
-        yield (b"--frame\r\nContent-Type: image/jpeg\r\n\r\n" + frame_with_boxes_bytes + b"\r\n")
+                    frame = results[0].plot()
+
+                    frame_with_boxes_bytes = base64.b64encode(cv2.imencode(
+                        '.jpg', frame)[1].tobytes()).decode()
+
+                    # yield (b"--frame\r\nContent-Type: image/jpeg\r\n\r\n" + frame_with_boxes_bytes + b"\r\n")
+                    await websocket.send_text(frame_with_boxes_bytes)
 
 
-@app.get("/api/videoCamera")
-async def get_video_feed(url: str):
-    rtcp_url = urllib.parse.unquote(url)
-    # request_body = await request.json()
-    # rtcp_url = request_body.get("rtcp_url")
 
-    return StreamingResponse(video_capture(rtcp_url), media_type="multipart/x-mixed-replace; boundary=frame")
+@app.websocket("/api/videoCamera")
+async def get_video_feed(websocket: WebSocket):
+    print("aleeeeee")
+    await websocket.accept()
+
+    # try:
+    #     gen = video_capture(rtsp_url)
+    #     response = StreamingResponse(gen, media_type="multipart/x-mixed-replace; boundary=frame")
+    # except Exception as e:
+    #     raise HTTPException(detail=e, status_code=status.HTTP_404_NOT_FOUND)
+    # return response
+    try:
+        while True:
+            rtsp_url = await websocket.receive_text()
+            await video_capture(rtsp_url, websocket)
+    except Exception as e:
+        raise HTTPException(detail=e, status_code=400)
+    finally:
+        await websocket.close()
 
 
 @app.get("/api/ping")
