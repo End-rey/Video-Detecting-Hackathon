@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useMemo } from "react";
 import MyInput from "../UI/input/MyInput";
 import MyButton from "../UI/button/MyButton";
 import cl from "./addForm.module.css";
@@ -34,16 +34,9 @@ const CameraAddForm = ({ ...props }) => {
   };
 
   const clearMistakes = useMemo(() => {
-
-
     if (!props.modalStatus) {
       setError('')
       setInputText('')
-
-
-
-
-
     }
   },[props.modalStatus])
 
