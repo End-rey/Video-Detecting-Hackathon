@@ -1,15 +1,28 @@
 .MyBtn {
-    width: auto;
-    padding: 10px 10px;
-    color:teal;
-    font-size: 14px;
-    background: transparent;
-    border: 1px solid teal;
+    display: flex;
+    justify-content: space-evenly;
+    gap: 5px;
+    width: 18rem;
+    height: 60px;
+    padding: 15px 10px;
+    color: var(--text-color);
+    font-size: 20px;
+    font-family: "Montserrat Alternates";
+    background-color: var(--button-background-color);
+    transition:
+            background-color 200ms linear,
+            border 200ms linear;
+    border: 1px solid var(--border-color);
     cursor: pointer;
+    box-shadow: 0px 4px 4px 0px rgba(0, 0, 0, 0.25);
     border-radius: 5px;
 }
 
 .MyBtn:hover {
-    background: aquamarine;
+    background-color: var(--button-background-color-hover);
+    transition: background-color 200ms linear;
 }
+
+/* upload 1 */
+
 

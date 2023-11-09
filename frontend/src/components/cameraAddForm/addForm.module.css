@@ -4,6 +4,8 @@
     gap: 5px;
     align-items: center;
     margin-top: 5px;
+    background-color: var(--background-app-color);
+    transition: background-color 200ms linear;
 }
 
 
