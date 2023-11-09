@@ -71,7 +71,7 @@ function Camera() {
 
 
         <MyModal visible={modal} setVisible={setModal}>
-          <CameraAddForm cameraUrl={cameraUrl} setCameraUrl={setCameraUrl} modalStatus={modal} setModalStatus={setModal} setCameraList={setCameraList}></CameraAddForm>
+          <CameraAddForm cameraUrl={cameraUrl} setCameraUrl={setCameraUrl} modalStatus={modal} setModalStatus={setModal}></CameraAddForm>
           {/* <VideoDetect url={cameraUrl} setModalStatus={setModal} setCameraUrl={setCameraUrl}/> */}
         </MyModal>
 

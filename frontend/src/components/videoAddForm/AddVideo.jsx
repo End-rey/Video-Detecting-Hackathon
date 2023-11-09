@@ -7,10 +7,10 @@ const AddVideo = ({...props}) => {
     const handleFileUpload = (event) => {
       let file = event.target.files[0];
       const url = URL.createObjectURL(file);
-      console.log(url)
       props.setVideoUrl(url);
-      props.setModalStatus(false)
       setInput('')
+      props.setModalStatus(false)
+
 
     };
     return (

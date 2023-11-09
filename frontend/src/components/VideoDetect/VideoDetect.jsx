@@ -20,7 +20,7 @@ const VideoDetect = ({cameraUrl, setCameraUrl}) => {
       ws.close();
     }
 
-    const socket = new WebSocket("ws://localhost/api/videoCamera");
+    const socket = new WebSocket("ws://localhost:8000/api/videoCamera");
     setWs(socket);
 
     socket.onopen = () => {

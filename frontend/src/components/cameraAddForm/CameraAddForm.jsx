@@ -1,9 +1,9 @@
-import React, { useState, useMemo } from "react";
+import React, {useState, useMemo} from "react";
 import MyInput from "../UI/input/MyInput";
 import MyButton from "../UI/button/MyButton";
 import cl from "./addForm.module.css";
 
-const CameraAddForm = ({ ...props }) => {
+const CameraAddForm = ({...props}) => {
   const [inputText, setInputText] = useState("");
   const [error, setError] = useState("");
 
@@ -33,37 +33,37 @@ const CameraAddForm = ({ ...props }) => {
     }
   };
 
-  // const clearMistakes = useMemo(() => {
-  //   if (!props.modalStatus) {
-  //     setError('')
-  //     setInputText('')
-  //   }
-  // },[props.modalStatus])
+  useMemo(() => { //Очистка инпута при закрытии модалки
+    if (!props.modalStatus) {
+      setError('')
+      setInputText('')
+    }
+  }, [props.modalStatus])
 
   return (
-    <div className={cl.wrapper}>
-      <h1>Введите ссылку!</h1>
-      <form className={cl.formStyles}>
-        <MyInput
-          value={inputText}
-          onChange={handleChangeText}
-          className={cl["videoDetect-inputUrl"]}
-          type="text"
-        ></MyInput>
+      <div className={cl.wrapper}>
+        <h1>Введите ссылку!</h1>
+        <form className={cl.formStyles}>
+          <MyInput
+              value={inputText}
+              onChange={handleChangeText}
+              className={cl["videoDetect-inputUrl"]}
+              type="text"
+          ></MyInput>
 
-        <div className={cl.wrapper}>
-          <MyButton
-            className={cl["videoDetect-sendUrlButton"]}
-            onClick={handleTextButtonClick}
-          >
-            Send
-          </MyButton>
-        </div>
-        <div>
-          {error && <h4 style={{ color: "red", marginTop: "5px" }}>{error}</h4>}
-        </div>
-      </form>
-    </div>
+          <div className={cl.wrapper}>
+            <MyButton
+                className={cl["videoDetect-sendUrlButton"]}
+                onClick={handleTextButtonClick}
+            >
+              Send
+            </MyButton>
+          </div>
+          <div>
+            {error && <h4 style={{color: "red", marginTop: "5px"}}>{error}</h4>}
+          </div>
+        </form>
+      </div>
   );
 };
 
