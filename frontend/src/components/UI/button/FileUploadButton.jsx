@@ -1,4 +1,4 @@
-import React, {useState, useRef} from 'react';
+import React, {useRef} from 'react';
 import MyButton from "./MyButton";
 
 const FileUploadButton = ({...props}) => {
@@ -7,14 +7,12 @@ const FileUploadButton = ({...props}) => {
 
     const handleFileUpload = (event) => {
       const selectedFile = event.target.files[0];
-      const url = URL.createObjectURL(selectedFile);
-      // Обработка выбранного видеофайла
-      console.log(selectedFile);
-      props.setVideoUrl(url);
+      props.setVideoFile(selectedFile);
     };
-
+    
     const openFilePicker = () => {
       fileInput.current.click();
+      props.setVideoFile(null);
     };
 
     return (
