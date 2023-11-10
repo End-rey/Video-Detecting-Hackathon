@@ -1,5 +1,5 @@
 .videoDetect {
-    display: block;
+    display: flex;
     position: relative;
     margin: 0 auto;
     margin-top: 2vh;

@@ -26,9 +26,7 @@ const Video = () => {
 
         <VideoNavbar title={title} videoUrl={videoUrl} setVideoUrl={setVideoUrl}/>
 
-        <MyModal visible={modal} setVisible={setModal}>
-          <AddVideo modalStatus={modal} setModalStatus={setModal} videoUrl={videoUrl} setVideoUrl={setVideoUrl}/>
-        </MyModal>
+
         <div style={{marginTop: '10vh'}}>
           {videoUrl
               ? <video  height='400px' width="auto" loop autoPlay muted src={videoUrl}  controls/>

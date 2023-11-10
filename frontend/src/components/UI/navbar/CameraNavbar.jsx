@@ -6,7 +6,7 @@ import Navbar from "./Navbar";
 import ChangeThemeButton from "../button/ChangeThemeButton";
 import {useTheme} from "../../../hooks/useTheme";
 const CameraNavbar = ({...props}) => {
-  const {theme,setTheme} = useTheme()
+
 
 
 

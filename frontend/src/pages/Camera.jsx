@@ -59,7 +59,7 @@ function Camera() {
         <CameraNavbar title={title} changeModalStatus={changeModalStatus}/>
 
         {cameraUrl !== null
-            //  ? <CameraComponentsList cameraUrls={cameraUrl}/>
+            //  ? <CameraComponentsList  cameraUrls={cameraUrl}/>
             ? (<VideoDetect cameraUrl={cameraUrl} setCameraUrl={setCameraUrl}/>)
             : <h1 style={{marginTop:'10vh'}}>Камеры пока нет...</h1>
         }
@@ -71,7 +71,7 @@ function Camera() {
 
 
         <MyModal visible={modal} setVisible={setModal}>
-          <CameraAddForm cameraUrl={cameraUrl} setCameraUrl={setCameraUrl} modalStatus={modal} setModalStatus={setModal}></CameraAddForm>
+          <CameraAddForm  cameraUrl={cameraUrl} setCameraUrl={setCameraUrl} modalStatus={modal} setModalStatus={setModal}></CameraAddForm>
           {/* <VideoDetect url={cameraUrl} setModalStatus={setModal} setCameraUrl={setCameraUrl}/> */}
         </MyModal>
 

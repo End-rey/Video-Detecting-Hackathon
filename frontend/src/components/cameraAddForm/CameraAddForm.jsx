@@ -27,7 +27,10 @@ const CameraAddForm = ({...props}) => {
       const videoUrl = inputText;
       props.setModalStatus(false);
 
+
       props.setCameraUrl(videoUrl);
+
+
     } else {
       setError("Invalid URL");
     }
