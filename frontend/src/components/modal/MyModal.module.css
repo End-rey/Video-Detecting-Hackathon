@@ -9,10 +9,11 @@
     display:flex;
     align-items: center;
     justify-content: center;
-    background: rgba(0,0,0,0.5);
+    background: rgba(0,0,0,0.4);
     opacity: 0;
     transition: 0.2s;
     pointer-events: none;
+
 
 }
 
@@ -23,12 +24,15 @@
     opacity: 1;
     pointer-events: all;
     z-index: 2;
+
 }
 
 .myModalContent {
     padding:15px 15px 15px 15px;
-    background: white;
     border-radius: 16px;
 
-    width: 50vw;
+    width: 40vw;
+    background-color: var(--background-app-color);
+    transition: background-color 200ms linear;
 }
+

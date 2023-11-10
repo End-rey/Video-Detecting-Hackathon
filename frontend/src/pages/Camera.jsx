@@ -10,12 +10,13 @@ import {Link} from "react-router-dom";
 import MyButton from "../components/UI/button/MyButton";
 
 import VideoDetect from "../components/VideoDetect/VideoDetect";
+import CameraNavbar from "../components/UI/navbar/CameraNavbar";
 
 
 
 
 function Camera() {
-  const title = 'Проект от VэЧипZи'
+  const title = 'Решение от Врот(Т)Чипсы'
   const [ping, setPing] = useState(null);
 
   const [modal, setModal] = useState(false)
@@ -54,24 +55,13 @@ function Camera() {
 
   return (
       <div className="App">
-        <Navbar>
-          <div className={cl.navbar_left}>
-            <img width='40 px' height='auto' src='https://www.anapa-official.ru/simai.data/image/logo/Coat_of_Arms_of_Anapa_(Krasnodar_krai).svg%20copy.png' alt=''/>
-            <h1>{title}</h1>
-          </div>
-          <div className={cl.navbar_right}>
-            <Link to='/'>Видео</Link>
-            <Link to='/camera'>Камеры</Link>
-            <MyButton onClick={() => changeModalStatus()}>Добавить камеру</MyButton>
-            <MyButton>
-              Сменить тему
-            </MyButton>
-          </div>
-        </Navbar> 
+
+        <CameraNavbar title={title} changeModalStatus={changeModalStatus}/>
+
         {cameraUrl !== null
             //  ? <CameraComponentsList cameraUrls={cameraUrl}/>
             ? (<VideoDetect cameraUrl={cameraUrl} setCameraUrl={setCameraUrl}/>)
-            : (<NoCamera/>)
+            : <h1 style={{marginTop:'10vh'}}>Камеры пока нет...</h1>
         }
 
         <button onClick={pingServer}>Ping</button>
@@ -81,7 +71,7 @@ function Camera() {
 
 
         <MyModal visible={modal} setVisible={setModal}>
-          <CameraAddForm cameraUrl={cameraUrl} setCameraUrl={setCameraUrl} modalStatus={modal} setModalStatus={setModal} setCameraList={setCameraList}></CameraAddForm>
+          <CameraAddForm cameraUrl={cameraUrl} setCameraUrl={setCameraUrl} modalStatus={modal} setModalStatus={setModal}></CameraAddForm>
           {/* <VideoDetect url={cameraUrl} setModalStatus={setModal} setCameraUrl={setCameraUrl}/> */}
         </MyModal>
 
