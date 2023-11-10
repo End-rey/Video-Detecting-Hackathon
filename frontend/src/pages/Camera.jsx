@@ -34,7 +34,7 @@ function Camera() {
 
 
   function pingServer() {
-    fetch("/api/ping")
+    fetch("http://localhost:8000/api/ping")
         .then((response) => {
           if (!response.ok) {
             throw new Error("Ошибка сети");

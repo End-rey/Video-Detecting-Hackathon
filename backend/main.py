@@ -2,18 +2,14 @@ import base64
 import io
 import cv2
 import av
-from fastapi import FastAPI, Request, Response, WebSocket
-from fastapi.responses import HTMLResponse, StreamingResponse
+from fastapi import FastAPI, WebSocket, WebSocketDisconnect
+from fastapi.responses import StreamingResponse
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi import UploadFile
-from fastapi.templating import Jinja2Templates
 import numpy as np
-import urllib.parse
-from fastapi import status, HTTPException
-from contextlib import closing
 
 from ultralytics import YOLO
-import websockets
+from logger import create_logger
 
 app = FastAPI(
     openapi_url="/api/restdocs",
@@ -23,18 +19,16 @@ app = FastAPI(
 app.add_middleware(
     CORSMiddleware,
     allow_origins=["*"],
+    allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
 )
 
+# Создаем логгер
+logger = create_logger()
+
 model = YOLO('model/yolov8n.pt')
 # model.cpu()
-
-templates = Jinja2Templates(directory="static")
-
-@app.get("/", response_class=HTMLResponse)
-def read_root(request: Request):
-    return templates.TemplateResponse("yolo8.html", context={"request": request})
 
 @app.post("/api/image")
 async def image_detect(file: UploadFile):
@@ -49,9 +43,8 @@ async def image_detect(file: UploadFile):
 
 # Function to capture video frames from the webcam
 async def video_capture(rtsp_url, websocket):
-    # rtsp_url = "rtsp://admin:A1234567@188.170.176.190:8028/Streaming/Channels/101?transportmode=unicast&profile=Profile_1"
-    print(rtsp_url)
-    with closing(av.open(rtsp_url)) as container:
+    with av.open(rtsp_url) as container:
+        logger.info("container open!")
         stream = container.streams.video[0]
         stream.thread_type = "FRAME"
         # stream.codec_context.skip_frame = "NONKEY"
@@ -62,16 +55,16 @@ async def video_capture(rtsp_url, websocket):
         desired_frame_rate = 5
         i = 0
 
+        logger.info(f"Base rate: {stream.base_rate}")
         for frame in container.decode(stream):
             if frame:
                 i += 1
                 if i == base_fps:
                     i = 0
                 if i % (base_fps / desired_frame_rate) == 0:
+                    logger.info(f"Frame:{frame}")
                     frame = frame.reformat(640, 480)
                     image = frame.to_image()
-
-                    # frame = np.array(image)
 
                     results = model(image)
 
@@ -80,28 +73,22 @@ async def video_capture(rtsp_url, websocket):
                     frame_with_boxes_bytes = base64.b64encode(cv2.imencode(
                         '.jpg', frame)[1].tobytes()).decode()
 
-                    # yield (b"--frame\r\nContent-Type: image/jpeg\r\n\r\n" + frame_with_boxes_bytes + b"\r\n")
                     await websocket.send_text(frame_with_boxes_bytes)
-
 
 
 @app.websocket("/api/videoCamera")
 async def get_video_feed(websocket: WebSocket):
-    print("aleeeeee")
+    logger.info("Start WebSocket connection")
     await websocket.accept()
-
-    # try:
-    #     gen = video_capture(rtsp_url)
-    #     response = StreamingResponse(gen, media_type="multipart/x-mixed-replace; boundary=frame")
-    # except Exception as e:
-    #     raise HTTPException(detail=e, status_code=status.HTTP_404_NOT_FOUND)
-    # return response
     try:
         while True:
             rtsp_url = await websocket.receive_text()
+            logger.info(rtsp_url)
             await video_capture(rtsp_url, websocket)
+    except WebSocketDisconnect:
+        logger.info("WebSocket disconnected")
     except Exception as e:
-        raise HTTPException(detail=e, status_code=400)
+        logger.error(f"WebSocket error: {e}")
     finally:
         await websocket.close()
 

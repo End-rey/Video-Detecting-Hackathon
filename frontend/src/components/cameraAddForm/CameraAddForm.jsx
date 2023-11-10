@@ -33,12 +33,12 @@ const CameraAddForm = ({ ...props }) => {
     }
   };
 
-  // const clearMistakes = useMemo(() => {
-  //   if (!props.modalStatus) {
-  //     setError('')
-  //     setInputText('')
-  //   }
-  // },[props.modalStatus])
+  const clearMistakes = useMemo(() => {
+    if (!props.modalStatus) {
+      setError('')
+      setInputText('')
+    }
+  },[props.modalStatus])
 
   return (
     <div className={cl.wrapper}>
