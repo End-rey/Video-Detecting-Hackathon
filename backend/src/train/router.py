@@ -4,14 +4,13 @@ import numpy as np
 import os
 
 from pydantic import BaseModel
+from torch import Tensor
 
 router = APIRouter()
 
 class DetectImage(BaseModel):
-    id: int
-    imageWithBox: str
-    rawImage: str
-    box: list[float]
+    resOfPerson: int
+    box: list[list[float]]
 
 dir_train = "../dataset/train"
 if not os.path.exists(dir_train):

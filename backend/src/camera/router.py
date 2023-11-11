@@ -3,6 +3,7 @@ import cv2
 from fastapi import APIRouter, WebSocket, WebSocketDisconnect
 
 import av
+import numpy as np
 from shared_files import person_with_gun_model, logger
 
 router = APIRouter()
@@ -68,4 +69,4 @@ async def video_stream_capture(rtsp_url, websocket):
                     frame_with_boxes_bytes = base64.b64encode(cv2.imencode(
                         '.jpg', frame)[1].tobytes()).decode()
 
-                    await websocket.send_json({"image": frame_with_boxes_bytes, "sus": sus})
+                    await websocket.send_json({"image": frame_with_boxes_bytes, "sus": sus, "box": results[0].boxes.xyxy.numpy().tolist()})
