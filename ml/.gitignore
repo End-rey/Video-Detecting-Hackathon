@@ -2,3 +2,5 @@ datasets
 runs
 .ipynb_checkpoints
 api_key.txt
+yolov8n.pt
+yolov8n-pose.pt
