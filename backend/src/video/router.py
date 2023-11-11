@@ -11,15 +11,18 @@ from shared_files import person_with_gun_model, logger
 router = APIRouter()
 
 tmp_file = 0
-dir_path_image = "./video/tmp/images/"
+# dir_path_image = "./video/tmp/images/"
 file_path_video = "./video/tmp/video.mp4"
 if not os.path.exists("./video/tmp"):
     os.mkdir("./video/tmp")
-    os.mkdir(dir_path_image)
+    # os.mkdir(dir_path_image)
+
+images = []
+
 
 @router.post("/")
 async def post_detect_video(file: UploadFile):
-    global tmp_file
+    global tmp_file, images
     if tmp_file != 0:
         tmp_file.close()
 
@@ -27,10 +30,12 @@ async def post_detect_video(file: UploadFile):
         os.remove(file_path_video)
         logger.info("File deleted")
 
-    if (len([name for name in os.listdir(dir_path_image) if os.path.isfile(os.path.join(dir_path_image, name))]) > 0):
-        shutil.rmtree(dir_path_image)
-        os.mkdir(dir_path_image)
-        logger.info("Images deleted")
+    # if (len([name for name in os.listdir(dir_path_image) if os.path.isfile(os.path.join(dir_path_image, name))]) > 0):
+    #     shutil.rmtree(dir_path_image)
+    #     os.mkdir(dir_path_image)
+    #     logger.info("Images deleted")
+    if len(images) > 0:
+        images = []
 
     try:
         if not file.content_type.startswith("video"):
@@ -77,13 +82,16 @@ async def post_detect_video(file: UploadFile):
 
                     img_array = results[0].plot()
 
-                    sus_res = len(results[0].boxes.cls) > 0    # TODO: Add classification model
+                    # TODO: Add classification model
+                    sus_res = len(results[0].boxes.cls) > 0
                     if (sus_res and (sus_i == -1)):
                         sus_i = frame.index + timeout
                         logger.info(
                             "Suuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuus")
-                        cv2.imwrite(dir_path_image +
-                                    str(frame.index) + ".jpg", img_array)
+                        # cv2.imwrite(dir_path_image +
+                        #             str(frame.index) + ".jpg", img_array)
+                        images.append({"image": base64.b64encode(cv2.imencode(
+                            '.jpg', img_array)[1].tobytes()).decode(), "sus": 1, "box": results[0].boxes.xyxy.numpy().tolist()})
 
                     if (sus_i == frame.index):
                         sus_i = -1
@@ -116,13 +124,14 @@ async def get_detect_video():
 
 @router.get("/image")
 async def get_image_from_detect_video():
-    image_paths = [os.path.join(dir_path_image, name) for name in os.listdir(
-        dir_path_image) if os.path.isfile(os.path.join(dir_path_image, name))]
+    global images
+    # image_paths = [os.path.join(dir_path_image, name) for name in os.listdir(
+    #     dir_path_image) if os.path.isfile(os.path.join(dir_path_image, name))]
     try:
-        images = []
-        for path in image_paths:
-            with open(path, "rb") as file:
-                images.append(base64.b64encode(file.read()).decode())
+        # images = []
+        # for path in image_paths:
+        #     with open(path, "rb") as file:
+        #         images.append(base64.b64encode(file.read()).decode())
         return {"images": images}
     except Exception as e:
         raise HTTPException(status_code=500, detail=e)
