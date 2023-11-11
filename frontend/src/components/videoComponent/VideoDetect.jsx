@@ -15,15 +15,14 @@ const VideoDetect = ({ videoFile, setVideoFile }) => {
         body: formData,
       });
 
+      console.log(response);
+
       if (!response.ok) {
-        const data = await response.json();
-        console.error("Error:", data);
+        console.log("error in response");
         return;
       }
 
-      const blob = await response.blob();
-      const videoUrl = URL.createObjectURL(blob);
-      setVideoSrc(videoUrl);
+      setVideoSrc("http://localhost:8000/api/video");
     } catch (error) {
       console.error("Error:", error);
     }
@@ -35,7 +34,7 @@ const VideoDetect = ({ videoFile, setVideoFile }) => {
     videoDetectOnServer();
   }, []);
 
-  return <div>{videoSrc && <video controls width="640" src={videoSrc} />}</div>;
+  return <div>{videoSrc && <video controls src={videoSrc} />}</div>;
 };
 
 export default VideoDetect;
