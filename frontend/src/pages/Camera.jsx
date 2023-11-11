@@ -11,7 +11,7 @@ import MyButton from "../components/UI/button/MyButton";
 
 import CameraDetect from "../components/CameraDetect/CameraDetect";
 import CameraNavbar from "../components/UI/navbar/CameraNavbar";
-import Events from "../components/eventComponent/Events";
+import CameraEvents from "../components/eventComponent/CameraEvents";
 
 
 
@@ -74,7 +74,7 @@ function Camera() {
             : <h1 style={{marginTop:'10vh'}}>Камеры пока нет...</h1>
         }
 
-        <Events dangPhotoArray={dangPhotoArr}/>
+        <CameraEvents dangPhotoArray={dangPhotoArr}/>
 
 
         <MyModal visible={modal} setVisible={setModal}>

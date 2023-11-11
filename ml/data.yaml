@@ -1,5 +1,5 @@
-train: train/images
-val: train/images
+train: video/images
+val: video/images
 
-nc: 1
-names: ['gun']
+nc: 2
+names: ['gun', 'gunner']

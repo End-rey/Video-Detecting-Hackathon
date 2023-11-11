@@ -82,11 +82,11 @@ const CameraDetect = ({...props}) => {
 
       <div className={cl["cameraDetect"]}>
         {isLoading
-            ? <Loader/>
+            ? <Loader  style={{marginTop: '10vh'}}/>
             : (error !== ''
                 ? (
                     <div className={cl.wrapper}>
-                      <h1 style={{color: 'red' ,verticalAlign:'center'}}>{error}</h1>
+                      <h1 style={{color: 'red' ,verticalAlign:'center', marginTop: '10vh'}}>{error}</h1>
                       <MyButton style={{marginTop: '15px'}}
 
                           onClick={() => {
