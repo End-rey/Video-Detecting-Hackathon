@@ -51,10 +51,10 @@ async def post_detect_video(file: UploadFile):
             fps = in_stream.base_rate
             if (in_stream.width > in_stream.height):
                 width = 640
-                height = in_stream.height / (in_stream.width / width)
+                height = int(in_stream.height / (in_stream.width / width))
             else:
                 height = 480
-                width = in_stream.width / (in_stream.height / height)
+                width = int(in_stream.width / (in_stream.height / height))
 
             out_container = av.open(file_path_video, 'w')
             out_stream = out_container.add_stream(
