@@ -1,7 +1,7 @@
 import React, {useState} from 'react';
 import cl from './Events.module.css'
 
-const Events = ({...props}) => {
+const CameraEvents = ({...props}) => {
 
   return (
       <div className={cl.gridContainer}>
@@ -21,4 +21,4 @@ const Events = ({...props}) => {
   );
 };
 
-export default Events;
+export default CameraEvents;

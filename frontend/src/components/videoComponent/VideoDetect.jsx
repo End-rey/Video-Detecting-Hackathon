@@ -1,40 +1,62 @@
-import React, { useEffect, useState } from "react";
+import React, {useEffect, useState} from "react";
+import Loader from "../UI/loader/Loader";
 
-const VideoDetect = ({ videoFile, setVideoFile }) => {
-  const [videoSrc, setVideoSrc] = useState(null);
+const VideoDetect = ({videoFile, addPhoto}) => {
+      const [videoSrc, setVideoSrc] = useState(null);
+      const [isLoading, setIsLoading] = useState(false)
+      const [error, setError] = useState(null)
 
-  const videoDetectOnServer = async () => {
-    const formData = new FormData();
-    formData.append("file", videoFile);
+      const videoDetectOnServer = async () => {
+        const formData = new FormData();
+        formData.append("file", videoFile);
 
-    console.log("Send video to server");
+        console.log("Send video to server");
 
-    try {
-      const response = await fetch("http://localhost:8000/api/video", {
-        method: "POST",
-        body: formData,
-      });
+        try {
+          setIsLoading(true)
+          const response = await fetch("http://localhost:8000/api/video", {
+            method: "POST",
+            body: formData,
+          });
+          const response_photos = await fetch('http://localhost:8000/api/video/image')
+          console.log(response_photos.body)
 
-      console.log(response);
 
-      if (!response.ok) {
-        console.log("error in response");
-        return;
-      }
+          if (!response.ok) {
+            console.log("error in response");
+            return;
+          }
 
-      setVideoSrc("http://localhost:8000/api/video");
-    } catch (error) {
-      console.error("Error:", error);
+          setVideoSrc("http://localhost:8000/api/video");
+        } catch (error) {
+
+          console.error("Error:", error);
+        } finally {
+          setIsLoading(false)
+
+        }
+      };
+
+      useEffect(() => {
+        if (!videoFile) return;
+
+        videoDetectOnServer();
+      }, []);
+
+      return (
+          <div>
+            {isLoading
+                ? <Loader/>
+                :
+                        <div>{videoSrc && <video controls src={videoSrc}/>}</div>
+
+
+            }
+          </div>
+
+
+      )
     }
-  };
-
-  useEffect(() => {
-    if (!videoFile) return;
-
-    videoDetectOnServer();
-  }, []);
-
-  return <div>{videoSrc && <video controls src={videoSrc} />}</div>;
-};
+;
 
 export default VideoDetect;
