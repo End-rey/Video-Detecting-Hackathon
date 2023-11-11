@@ -4,10 +4,10 @@
     align-items: center;
     gap: 5px;
     width: 11vw;
-    height: 60px;
+    height: 50px;
     padding: 15px 10px;
     color: var(--text-color);
-    font-size: 20px;
+    font-size: 15px;
     font-family: "Montserrat Alternates";
     background-color: var(--button-background-color);
     transition:
@@ -21,7 +21,7 @@
 
 @media screen and (max-width: 1520px) {
     .MyBtn {
-        font-size: 10px;
+        font-size: 7px;
         font-family: "Montserrat Alternates", serif;
     }
 }

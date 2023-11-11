@@ -20,7 +20,7 @@
     display: flex;
     justify-content: space-evenly;
     gap: 3em;
-    font-size: 15px; /* Размер шрифта надписи */
+    font-size: 12px; /* Размер шрифта надписи */
     align-items: center;
 }
 
@@ -45,7 +45,7 @@ img {
 
 
 h1 {
-    font-size: 55px;
+    font-size: 45px;
     font-family: "Montserrat Alternates", serif;
 }
 
@@ -59,7 +59,7 @@ h1 {
 
 
 .links {
-    font-size: 30px;
+    font-size: 25px;
     font-family: "Montserrat Alternates";
 
 
