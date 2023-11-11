@@ -11,7 +11,7 @@ const Video = () => {
   const [videoFile, setVideoFile] = useState(null);
 
   const addPhoto = (photo) => {
-    setDangPhotoArr(prevDangPhotoArr => [...prevDangPhotoArr,{'id' : uuidv4(), 'image': `data:image/jpeg;base64,${photo}`}])
+    setDangPhotoArr(prevDangPhotoArr => [...prevDangPhotoArr,{'id' : uuidv4(),'box': photo.box, 'image': `data:image/jpeg;base64,${photo.image}`}])
   }
   return (
       <div className='App'>
@@ -25,7 +25,7 @@ const Video = () => {
               : <h1> Видео пока нет...</h1>
           }
         </div>
-        <VideoEvents dangPhotoArr={dangPhotoArr}/>
+        <VideoEvents setDangPhotoArr={setDangPhotoArr} dangPhotoArr={dangPhotoArr}/>
       </div>
 
   );

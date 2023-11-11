@@ -57,7 +57,7 @@ function Camera() {
 
 
   const addPhoto = (photo) => {
-    setDangPhotoArr(prevDangPhotoArr => [...prevDangPhotoArr, {'id': uuidv4(),  'image': `data:image/jpeg;base64,${photo.image}`}]);
+    setDangPhotoArr(prevDangPhotoArr => [...prevDangPhotoArr, {'id': uuidv4(), 'box': photo.box,  'image': `data:image/jpeg;base64,${photo.image}`}]);
   }
 
 
@@ -76,7 +76,7 @@ function Camera() {
             : <h1 style={{marginTop:'10vh'}}>Камеры пока нет...</h1>
         }
 
-        <CameraEvents dangPhotoArray={dangPhotoArr}/>
+        <CameraEvents setDangPhotoArr={setDangPhotoArr} dangPhotoArray={dangPhotoArr}/>
 
 
         <MyModal visible={modal} setVisible={setModal}>
