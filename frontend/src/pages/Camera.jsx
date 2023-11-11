@@ -9,7 +9,7 @@ import cl from "../components/UI/navbar/Navbar.module.css";
 import {Link} from "react-router-dom";
 import MyButton from "../components/UI/button/MyButton";
 
-import VideoDetect from "../components/VideoDetect/VideoDetect";
+import CameraDetect from "../components/CameraDetect/CameraDetect";
 import CameraNavbar from "../components/UI/navbar/CameraNavbar";
 
 
@@ -59,8 +59,8 @@ function Camera() {
         <CameraNavbar title={title} changeModalStatus={changeModalStatus}/>
 
         {cameraUrl !== null
-            //  ? <CameraComponentsList  cameraUrls={cameraUrl}/>
-            ? (<VideoDetect cameraUrl={cameraUrl} setCameraUrl={setCameraUrl}/>)
+            //  ? <CameraComponentsList cameraUrls={cameraUrl}/>
+            ? (<CameraDetect cameraUrl={cameraUrl} setCameraUrl={setCameraUrl}/>)
             : <h1 style={{marginTop:'10vh'}}>Камеры пока нет...</h1>
         }
 
@@ -71,7 +71,7 @@ function Camera() {
 
 
         <MyModal visible={modal} setVisible={setModal}>
-          <CameraAddForm  cameraUrl={cameraUrl} setCameraUrl={setCameraUrl} modalStatus={modal} setModalStatus={setModal}></CameraAddForm>
+          <CameraAddForm cameraUrl={cameraUrl} setCameraUrl={setCameraUrl} modalStatus={modal} setModalStatus={setModal}></CameraAddForm>
           {/* <VideoDetect url={cameraUrl} setModalStatus={setModal} setCameraUrl={setCameraUrl}/> */}
         </MyModal>
 

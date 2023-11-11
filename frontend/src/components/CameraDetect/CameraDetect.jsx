@@ -1,9 +1,9 @@
 import React, {useEffect, useState} from "react";
-import cl from "./VideoDetect.module.css";
+import cl from "./CameraDetect.module.css";
 import Loader from "../UI/loader/Loader";
 import MyButton from "../UI/button/MyButton";
 
-const VideoDetect = ({cameraUrl, setCameraUrl}) => {
+const CameraDetect = ({ cameraUrl, setCameraUrl }) => {
   const [videoUrl, setVideoUrl] = useState("");
   const [isLoading, setIsLoading] = useState(false)
   const [error, setError] = useState('');
@@ -23,7 +23,7 @@ const VideoDetect = ({cameraUrl, setCameraUrl}) => {
       ws.close();
     }
 
-    const socket = new WebSocket("ws://localhost:8000/api/videoCamera");
+    const socket = new WebSocket("ws://localhost:8000/api/camera");
     setWs(socket);
 
     socket.onopen = () => {
@@ -65,7 +65,7 @@ const VideoDetect = ({cameraUrl, setCameraUrl}) => {
       // setError(error);
     };
 
-    return () => socket.close()
+    return () => socket.close();
   }, []);
 
   return (
@@ -132,4 +132,4 @@ function isValidURL(url) {
   }
 }
 
-export default VideoDetect;
+export default CameraDetect;
