@@ -6,6 +6,7 @@ python-multipart
 
 # Camera
 av
+imageio[ffmpeg]
 
 # ML --------------------------------------
 ultralytics
