@@ -6,14 +6,14 @@ import cv2
 
 from fastapi import APIRouter, HTTPException, UploadFile
 from fastapi.responses import StreamingResponse
-from shared_files import model, logger
+from shared_files import person_with_gun_model, logger
 
 router = APIRouter()
 
 tmp_file = 0
 dir_path_image = "./video/tmp/images/"
 file_path_video = "./video/tmp/video.mp4"
-if (~os.path.exists("./video/tmp")):
+if not os.path.exists("./video/tmp"):
     os.mkdir("./video/tmp")
     os.mkdir(dir_path_image)
 
@@ -73,7 +73,7 @@ async def post_detect_video(file: UploadFile):
                     frame = frame.reformat(width, height)
                     image = frame.to_image()
 
-                    results = model(image)
+                    results = person_with_gun_model(image)
 
                     img_array = results[0].plot()
 

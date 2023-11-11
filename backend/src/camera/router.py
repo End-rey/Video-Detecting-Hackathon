@@ -3,7 +3,7 @@ import cv2
 from fastapi import APIRouter, WebSocket, WebSocketDisconnect
 
 import av
-from shared_files import model, logger
+from shared_files import person_with_gun_model, logger
 
 router = APIRouter()
 
@@ -49,7 +49,7 @@ async def video_stream_capture(rtsp_url, websocket):
                     frame = frame.reformat(640, 480)
                     image = frame.to_image()
 
-                    results = model(image)
+                    results = person_with_gun_model(image)
 
                     frame = results[0].plot()
 
