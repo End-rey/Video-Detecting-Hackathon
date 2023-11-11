@@ -3,19 +3,22 @@ from fastapi import APIRouter, Body, HTTPException, Response
 import numpy as np
 import os
 
+from pydantic import BaseModel
+
 router = APIRouter()
 
-class DetectImage:
+class DetectImage(BaseModel):
     id: int
     imageWithBox: str
     rawImage: str
-    box: np.ndarray
+    box: list[float]
 
 dir_train = "../dataset/train"
 if not os.path.exists(dir_train):
+    os.mkdir("../dataset")
     os.mkdir(dir_train)
 
-@router.post()
+@router.post("/")
 async def post_image_to_train(response: Response, item: DetectImage = Body(...)):
     try:
         save_base64_image(item.rawImage, "uploaded_image.jpg")

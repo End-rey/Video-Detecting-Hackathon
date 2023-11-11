@@ -53,7 +53,7 @@ async def video_stream_capture(rtsp_url, websocket):
 
                     frame = results[0].plot()
 
-                    sus_res = True     # TODO: Add classification model
+                    sus_res = len(results[0].boxes.cls) > 0     # TODO: Add classification model
                     if (sus_res and sus_i == -1):
                         sus_i = 0
                         sus = True
