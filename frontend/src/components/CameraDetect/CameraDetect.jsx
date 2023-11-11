@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
-import cl from "./VideoDetect.module.css";
+import cl from "./CameraDetect.module.css";
 
-const VideoDetect = ({cameraUrl, setCameraUrl}) => {
+const CameraDetect = ({ cameraUrl, setCameraUrl }) => {
   const [videoUrl, setVideoUrl] = useState("");
   // const [error, setError] = useState(null);
   const [ws, setWs] = useState(null);
@@ -20,7 +20,7 @@ const VideoDetect = ({cameraUrl, setCameraUrl}) => {
       ws.close();
     }
 
-    const socket = new WebSocket("ws://localhost:8000/api/videoCamera");
+    const socket = new WebSocket("ws://localhost:8000/api/camera");
     setWs(socket);
 
     socket.onopen = () => {
@@ -50,16 +50,16 @@ const VideoDetect = ({cameraUrl, setCameraUrl}) => {
       // setError(error);
     };
 
-    return () => socket.close()
+    return () => socket.close();
   }, []);
 
   return (
-    <div className={cl["videoDetect"]}>
+    <div className={cl["cameraDetect"]}>
       {/* {error && <p>{error}</p>} */}
       {videoUrl && (
-        <div className={cl["videoDetect-cameraDiv"]}>
+        <div className={cl["cameraDetect-cameraDiv"]}>
           <button
-            className={cl["videoDetect-Button"]}
+            className={cl["cameraDetect-Button"]}
             onClick={() => {
               ws.close();
               setVideoUrl(null);
@@ -69,7 +69,7 @@ const VideoDetect = ({cameraUrl, setCameraUrl}) => {
             Close
           </button>
           <img
-            className={cl["videoDetect-video"]}
+            className={cl["cameraDetect-video"]}
             src={videoUrl}
             alt="Live Video Feed"
           />
@@ -88,4 +88,4 @@ function isValidURL(url) {
   }
 }
 
-export default VideoDetect;
+export default CameraDetect;

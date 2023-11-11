@@ -2,7 +2,6 @@ import React from 'react';
 import cl from "./Navbar.module.css";
 import {Link} from "react-router-dom";
 import FileUploadButton from "../button/FileUploadButton";
-import MyButton from "../button/MyButton";
 import Navbar from "./Navbar";
 import ChangeThemeButton from "../button/ChangeThemeButton";
 
@@ -17,7 +16,7 @@ const VideoNavbar = ({...props}) => {
         <div className={cl.navbar_right}>
 
 
-          <FileUploadButton videoUrl={props.videoUrl} setVideoUrl={props.setVideoUrl}/>
+          <FileUploadButton videoFile={props.videoFile} setVideoFile={props.setVideoFile}/>
           <ChangeThemeButton/>
         </div>
       </Navbar>
