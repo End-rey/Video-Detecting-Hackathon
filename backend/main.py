@@ -165,9 +165,9 @@ async def video_stream_capture(rtsp_url, websocket):
 
                     results = model(image)
 
-                    frame = results[0].plot()
+                    frame_with_boxes = results[0].plot()
 
-                    sus_res = False     # TODO: Add classification model
+                    sus_res = False    # TODO: Add classification model
                     if (sus_res and sus_i == -1):
                         sus_i = 0
                         sus = True
@@ -180,9 +180,9 @@ async def video_stream_capture(rtsp_url, websocket):
                         sus_i = -1
 
                     frame_with_boxes_bytes = base64.b64encode(cv2.imencode(
-                        '.jpg', frame)[1].tobytes()).decode()
+                        '.jpg', frame_with_boxes)[1].tobytes()).decode()
 
-                    await websocket.send_json({"image": frame_with_boxes_bytes, "sus": sus})
+                    await websocket.send_json({"id": frame.index, "image": frame_with_boxes_bytes, "sus":sus})
 
 
 @app.websocket("/api/camera")
