@@ -20,7 +20,6 @@ if not os.path.exists(dir_train):
 @router.post("/")
 async def post_image_to_train(response: Response, item: DetectImage = Body(...)):
     try:
-        save_base64_image(item.rawImage, "uploaded_image.jpg")
         return {"message": "Image saved successfully"}
     except Exception as e:
         raise HTTPException(status_code=500, detail=f"Error saving image: {str(e)}")
