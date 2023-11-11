@@ -3,6 +3,7 @@ from fastapi.middleware.cors import CORSMiddleware
 
 from video.router import router as video_router
 from camera.router import router as camera_router
+from train.router import router as train_router
 
 app = FastAPI(
     docs_url="/api/docs",
@@ -23,13 +24,13 @@ app.include_router(
     tags=["Video"]
 )
 
-app.add_websocket_route("/api/camera", camera_router)
+app.include_router(
+    train_router,
+    prefix="/api/train",
+    tags=["Train"]
+)
 
-# app.include_router(
-#     camera_router,
-#     prefix="/api/camera",
-#     tags=["Camera"]
-# )
+app.add_websocket_route("/api/camera", camera_router)
 
 @app.get("/api/ping")
 async def ping():

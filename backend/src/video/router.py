@@ -77,7 +77,7 @@ async def post_detect_video(file: UploadFile):
 
                     img_array = results[0].plot()
 
-                    sus_res = True    # TODO: Add classification model
+                    sus_res = len(results[0].boxes.cls) > 0    # TODO: Add classification model
                     if (sus_res and (sus_i == -1)):
                         sus_i = frame.index + timeout
                         logger.info(
