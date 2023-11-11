@@ -8,6 +8,13 @@
     justify-content: center;
 }
 
+.wrapper {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
 .videoDetect-inputUrl {
     width: 80%;
     height: 3vh;

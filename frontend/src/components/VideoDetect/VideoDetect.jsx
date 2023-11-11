@@ -1,6 +1,7 @@
 import React, {useEffect, useState} from "react";
 import cl from "./VideoDetect.module.css";
 import Loader from "../UI/loader/Loader";
+import MyButton from "../UI/button/MyButton";
 
 const VideoDetect = ({cameraUrl, setCameraUrl}) => {
   const [videoUrl, setVideoUrl] = useState("");
@@ -36,8 +37,6 @@ const VideoDetect = ({cameraUrl, setCameraUrl}) => {
 
       setIsLoading(false)
       const imageData = message.data
-
-      setIsLoading(false)
       console.log(`[message] Данные получены с сервера`);
 
 
@@ -76,36 +75,39 @@ const VideoDetect = ({cameraUrl, setCameraUrl}) => {
             ? <Loader/>
             : (error !== ''
                 ? (
-                    <div>
-                      <h1 style={{color: 'red' ,alignSelf:'center'}}>{error}</h1>
-                      <button
-                          className={cl["videoDetect-Button"]}
+                    <div className={cl.wrapper}>
+                      <h1 style={{color: 'red' ,verticalAlign:'center'}}>{error}</h1>
+                      <MyButton style={{marginTop: '15px'}}
+
                           onClick={() => {
                             ws.close();
                             setVideoUrl(null);
                             setCameraUrl(null);
                           }}
                       >
-                        Close
-                      </button>
+                        Закрыть
+                      </MyButton>
                     </div>
                 )
                 : (videoUrl &&  <div className={cl["videoDetect-cameraDiv"]}>
-                      <button
-                          className={cl["videoDetect-Button"]}
-                          onClick={() => {
-                            ws.close();
-                            setVideoUrl(null);
-                            setCameraUrl(null);
-                          }}
-                      >
-                        Close
-                      </button>
-                      <img
-                          className={cl["videoDetect-video"]}
-                          src={videoUrl}
-                          alt="Live Video Feed"
-                      />
+                      <div className={cl.wrapper}>
+                        <img
+                            className={cl["videoDetect-video"]}
+                            src={videoUrl}
+                            alt="Live Video Feed"
+                        />
+                        <MyButton style={{marginTop: '15px'}}
+
+                            onClick={() => {
+                              ws.close();
+                              setVideoUrl(null);
+                              setCameraUrl(null);
+                            }}
+                        >
+                          Закрыть
+                        </MyButton>
+                      </div>
+
                     </div> )
 
                 )
