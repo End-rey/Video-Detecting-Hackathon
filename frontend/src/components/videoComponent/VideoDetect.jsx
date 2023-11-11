@@ -19,7 +19,8 @@ const VideoDetect = ({videoFile, addPhoto}) => {
             body: formData,
           });
           const response_photos = await fetch('http://localhost:8000/api/video/image')
-          console.log(response_photos.body)
+          const body = await response_photos.json()
+          console.log(body)
 
 
           if (!response.ok) {
