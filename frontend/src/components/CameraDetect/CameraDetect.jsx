@@ -1,13 +1,23 @@
-import React, {useEffect, useState} from "react";
+import React, {useEffect, useMemo, useState} from "react";
 import cl from "./CameraDetect.module.css";
 import Loader from "../UI/loader/Loader";
 import MyButton from "../UI/button/MyButton";
+import {useFetching} from "../../hooks/UseFetching";
+import {useJsonParse} from "../../hooks/useParseJson";
 
 const CameraDetect = ({ cameraUrl, setCameraUrl }) => {
   const [videoUrl, setVideoUrl] = useState("");
   const [isLoading, setIsLoading] = useState(false)
   const [error, setError] = useState('');
   const [ws, setWs] = useState(null);
+  const [fetchStatus, setFetchStatus] = useState(false)
+
+
+      const jsonData = useFetching()
+      const parsePhotoData = useJsonParse(jsonData).photo
+
+
+
 
   useEffect(() => {
     // setError(null);
@@ -34,9 +44,9 @@ const CameraDetect = ({ cameraUrl, setCameraUrl }) => {
     };
 
     socket.onmessage = (message) => {
-
+      setFetchStatus(true)
       setIsLoading(false)
-      const imageData = message.data
+      const imageData = parsePhotoData
       console.log(`[message] Данные получены с сервера`);
 
 
