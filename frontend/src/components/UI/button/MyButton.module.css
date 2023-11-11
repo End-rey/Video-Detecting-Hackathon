@@ -19,7 +19,7 @@
     border-radius: 5px;
 }
 
-@media screen and (max-width: 1520px) {
+@media screen and (max-width: 1020px) {
     .MyBtn {
         font-size: 7px;
         font-family: "Montserrat Alternates", serif;

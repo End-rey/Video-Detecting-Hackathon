@@ -2,6 +2,7 @@ import React, {useState} from 'react';
 import VideoNavbar from "../components/UI/navbar/VideoNavbar";
 import VideoDetect from '../components/videoComponent/VideoDetect';
 import VideoEvents from "../components/eventComponent/VideoEvents";
+import { v4 as uuidv4 } from 'uuid';
 
 
 const Video = () => {
@@ -10,7 +11,7 @@ const Video = () => {
   const [videoFile, setVideoFile] = useState(null);
 
   const addPhoto = (photo) => {
-    setDangPhotoArr(prevDangPhotoArr => [...prevDangPhotoArr,`data:image/jpeg;base64,${photo}`])
+    setDangPhotoArr(prevDangPhotoArr => [...prevDangPhotoArr,{'id' : uuidv4(), 'image': `data:image/jpeg;base64,${photo}`}])
   }
   return (
       <div className='App'>
@@ -20,7 +21,7 @@ const Video = () => {
         <div style={{marginTop: '10vh'}}>
           {videoFile
               // ? <video  height='400px' width="auto" loop autoPlay muted src={videoUrl}  controls/>
-              ? <VideoDetect addPhoto={addPhoto} videoFile={videoFile}/>
+              ? <VideoDetect addPhoto={addPhoto} videoFile={videoFile} setDangPhotoArr={setDangPhotoArr}/>
               : <h1> Видео пока нет...</h1>
           }
         </div>
