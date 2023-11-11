@@ -1,9 +1,12 @@
-import React, { useEffect, useState } from "react";
+import React, {useEffect, useState} from "react";
 import cl from "./CameraDetect.module.css";
+import Loader from "../UI/loader/Loader";
+import MyButton from "../UI/button/MyButton";
 
 const CameraDetect = ({ cameraUrl, setCameraUrl }) => {
   const [videoUrl, setVideoUrl] = useState("");
-  // const [error, setError] = useState(null);
+  const [isLoading, setIsLoading] = useState(false)
+  const [error, setError] = useState('');
   const [ws, setWs] = useState(null);
 
   useEffect(() => {
@@ -24,21 +27,30 @@ const CameraDetect = ({ cameraUrl, setCameraUrl }) => {
     setWs(socket);
 
     socket.onopen = () => {
+      setIsLoading(true)
       socket.send(cameraUrl);
       console.log("[open] Соединение установлено");
+
     };
 
     socket.onmessage = (message) => {
+
+      setIsLoading(false)
+      const imageData = message.data
       console.log(`[message] Данные получены с сервера`);
-      const imageData = message.data;
+
+
 
       setVideoUrl(`data:image/jpeg;base64,${imageData}`);
     };
 
     socket.onclose = function (event) {
+      setIsLoading(false)
+
+      setError('Невозможно установить соединение!')
       if (event.wasClean) {
         console.log(
-          `[close] Соединение закрыто чисто, код=${event.code} причина=${event.reason}`
+            `[close] Соединение закрыто чисто, код=${event.code} причина=${event.reason}`
         );
       } else {
         console.log("[close] Соединение прервано: ", event);
@@ -46,7 +58,10 @@ const CameraDetect = ({ cameraUrl, setCameraUrl }) => {
     };
 
     socket.onerror = (error) => {
-      console.log(error);
+      console.log(error.message);
+      setIsLoading(false)
+      setError('Невозможно установить соединение!')
+
       // setError(error);
     };
 
@@ -54,28 +69,57 @@ const CameraDetect = ({ cameraUrl, setCameraUrl }) => {
   }, []);
 
   return (
-    <div className={cl["cameraDetect"]}>
-      {/* {error && <p>{error}</p>} */}
-      {videoUrl && (
-        <div className={cl["cameraDetect-cameraDiv"]}>
-          <button
-            className={cl["cameraDetect-Button"]}
-            onClick={() => {
-              ws.close();
-              setVideoUrl(null);
-              setCameraUrl(null);
-            }}
-          >
-            Close
-          </button>
-          <img
-            className={cl["cameraDetect-video"]}
-            src={videoUrl}
-            alt="Live Video Feed"
-          />
-        </div>
-      )}
-    </div>
+
+      <div className={cl["videoDetect"]}>
+        {isLoading
+            ? <Loader/>
+            : (error !== ''
+                ? (
+                    <div className={cl.wrapper}>
+                      <h1 style={{color: 'red' ,verticalAlign:'center'}}>{error}</h1>
+                      <MyButton style={{marginTop: '15px'}}
+
+                          onClick={() => {
+                            ws.close();
+                            setVideoUrl(null);
+                            setCameraUrl(null);
+                          }}
+                      >
+                        Закрыть
+                      </MyButton>
+                    </div>
+                )
+                : (videoUrl &&  <div className={cl["videoDetect-cameraDiv"]}>
+                      <div className={cl.wrapper}>
+                        <img
+                            className={cl["videoDetect-video"]}
+                            src={videoUrl}
+                            alt="Live Video Feed"
+                        />
+                        <MyButton style={{marginTop: '15px'}}
+
+                            onClick={() => {
+                              ws.close();
+                              setVideoUrl(null);
+                              setCameraUrl(null);
+                            }}
+                        >
+                          Закрыть
+                        </MyButton>
+                      </div>
+
+                    </div> )
+
+                )
+
+
+
+
+
+        }
+
+
+      </div>
   );
 };
 
