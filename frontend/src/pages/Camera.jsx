@@ -11,6 +11,7 @@ import MyButton from "../components/UI/button/MyButton";
 
 import CameraDetect from "../components/CameraDetect/CameraDetect";
 import CameraNavbar from "../components/UI/navbar/CameraNavbar";
+import Events from "../components/eventComponent/Events";
 
 
 
@@ -18,7 +19,7 @@ import CameraNavbar from "../components/UI/navbar/CameraNavbar";
 function Camera() {
   const title = 'Решение от Врот(Т)Чипсы'
   const [ping, setPing] = useState(null);
-
+  const [dangPhotoArr, setDangPhotoArr] = useState([])
   const [modal, setModal] = useState(false)
   const [cameraList, setCameraList] = useState([
     //'http://webcam.anapa-official.ru:9999/player/?key=q1322qefasfrttg&cam=efb90850-93df-4bbb-ac51-9663342ee5b4',
@@ -31,6 +32,7 @@ function Camera() {
   const changeModalStatus = (modal) => {
     setModal(true)
   }
+
 
 
 
@@ -52,6 +54,14 @@ function Camera() {
   }
 
 
+  const addPhoto = (photo) => {
+    setDangPhotoArr(prevDangPhotoArr => [...prevDangPhotoArr, {'id': photo.id, 'image': `data:image/jpeg;base64,${photo.image}`}]);
+  }
+
+
+
+
+
 
   return (
       <div className="App">
@@ -60,14 +70,11 @@ function Camera() {
 
         {cameraUrl !== null
             //  ? <CameraComponentsList cameraUrls={cameraUrl}/>
-            ? (<CameraDetect cameraUrl={cameraUrl} setCameraUrl={setCameraUrl}/>)
+            ? (<CameraDetect  setPhotoArr={setDangPhotoArr} addPhoto={addPhoto} cameraUrl={cameraUrl} setCameraUrl={setCameraUrl}/>)
             : <h1 style={{marginTop:'10vh'}}>Камеры пока нет...</h1>
         }
 
-        <button onClick={pingServer}>Ping</button>
-
-        {ping && <p>{ping}</p>}
-
+        <Events dangPhotoArray={dangPhotoArr}/>
 
 
         <MyModal visible={modal} setVisible={setModal}>

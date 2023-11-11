@@ -1,15 +1,26 @@
-import React, { useEffect, useState } from "react";
+import React, {useEffect, useMemo, useState} from "react";
 import cl from "./CameraDetect.module.css";
+import Loader from "../UI/loader/Loader";
+import MyButton from "../UI/button/MyButton";
+import {useFetching} from "../../hooks/UseFetching";
+import {useJsonParse} from "../../hooks/useParseJson";
 
-const CameraDetect = ({ cameraUrl, setCameraUrl }) => {
+const CameraDetect = ({...props}) => {
   const [videoUrl, setVideoUrl] = useState("");
-  // const [error, setError] = useState(null);
+  const [isLoading, setIsLoading] = useState(false)
+  const [error, setError] = useState('');
   const [ws, setWs] = useState(null);
+
+
+
+
+
+
 
   useEffect(() => {
     // setError(null);
-    console.log(cameraUrl);
-    if (!isValidURL(cameraUrl)) {
+    console.log(props.cameraUrl);
+    if (!isValidURL(props.cameraUrl)) {
       // setError("Invalid URL");
       return 0;
     }
@@ -24,21 +35,32 @@ const CameraDetect = ({ cameraUrl, setCameraUrl }) => {
     setWs(socket);
 
     socket.onopen = () => {
-      socket.send(cameraUrl);
+      setIsLoading(true)
+      socket.send(props.cameraUrl);
       console.log("[open] Соединение установлено");
+
     };
 
     socket.onmessage = (message) => {
+      setIsLoading(false)
+      const responseData = JSON.parse(message.data)
       console.log(`[message] Данные получены с сервера`);
-      const imageData = message.data;
 
-      setVideoUrl(`data:image/jpeg;base64,${imageData}`);
+      if(responseData.sus) {
+        props.addPhoto(responseData)
+      }
+
+      setVideoUrl(`data:image/jpeg;base64,${responseData.image}`);
+
     };
 
     socket.onclose = function (event) {
+      props.setPhotoArr([])
+      setIsLoading(false)
+      setError('Невозможно установить соединение!')
       if (event.wasClean) {
         console.log(
-          `[close] Соединение закрыто чисто, код=${event.code} причина=${event.reason}`
+            `[close] Соединение закрыто чисто, код=${event.code} причина=${event.reason}`
         );
       } else {
         console.log("[close] Соединение прервано: ", event);
@@ -46,7 +68,10 @@ const CameraDetect = ({ cameraUrl, setCameraUrl }) => {
     };
 
     socket.onerror = (error) => {
-      console.log(error);
+      console.log(error.message);
+      setIsLoading(false)
+      setError('Невозможно установить соединение!')
+
       // setError(error);
     };
 
@@ -54,28 +79,57 @@ const CameraDetect = ({ cameraUrl, setCameraUrl }) => {
   }, []);
 
   return (
-    <div className={cl["cameraDetect"]}>
-      {/* {error && <p>{error}</p>} */}
-      {videoUrl && (
-        <div className={cl["cameraDetect-cameraDiv"]}>
-          <button
-            className={cl["cameraDetect-Button"]}
-            onClick={() => {
-              ws.close();
-              setVideoUrl(null);
-              setCameraUrl(null);
-            }}
-          >
-            Close
-          </button>
-          <img
-            className={cl["cameraDetect-video"]}
-            src={videoUrl}
-            alt="Live Video Feed"
-          />
-        </div>
-      )}
-    </div>
+
+      <div className={cl["cameraDetect"]}>
+        {isLoading
+            ? <Loader/>
+            : (error !== ''
+                ? (
+                    <div className={cl.wrapper}>
+                      <h1 style={{color: 'red' ,verticalAlign:'center'}}>{error}</h1>
+                      <MyButton style={{marginTop: '15px'}}
+
+                          onClick={() => {
+                            ws.close();
+                            setVideoUrl(null);
+                            props.setCameraUrl(null);
+                          }}
+                      >
+                        Закрыть
+                      </MyButton>
+                    </div>
+                )
+                : (videoUrl &&  <div className={cl["cameraDetect-cameraDiv"]}>
+                      <div className={cl.wrapper}>
+                        <img
+                            className={cl["cameraDetect-video"]}
+                            src={videoUrl}
+                            alt="Live Video Feed"
+                        />
+                        <MyButton style={{marginTop: '15px'}}
+
+                            onClick={() => {
+                              ws.close();
+                              setVideoUrl(null);
+                              props.setCameraUrl(null);
+                            }}
+                        >
+                          Закрыть
+                        </MyButton>
+                      </div>
+
+                    </div> )
+
+                )
+
+
+
+
+
+        }
+
+
+      </div>
   );
 };
 

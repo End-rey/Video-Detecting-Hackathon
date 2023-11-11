@@ -1,11 +1,18 @@
 .cameraDetect {
-    display: block;
+    display: flex;
     position: relative;
     margin: 0 auto;
     margin-top: 2vh;
     height: 33%;
     width: 90%;
     justify-content: center;
+}
+
+.wrapper {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
 }
 
 .cameraDetect-inputUrl {
