@@ -1,7 +1,7 @@
 import React, {useEffect, useState} from "react";
 import Loader from "../UI/loader/Loader";
 
-const VideoDetect = ({videoFile, addPhoto}) => {
+const VideoDetect = ({videoFile, addPhoto, setDangPhotoArr}) => {
       const [videoSrc, setVideoSrc] = useState(null);
       const [isLoading, setIsLoading] = useState(false)
       const [error, setError] = useState(null)
@@ -13,13 +13,17 @@ const VideoDetect = ({videoFile, addPhoto}) => {
         console.log("Send video to server");
 
         try {
+          setDangPhotoArr([])
           setIsLoading(true)
           const response = await fetch("http://localhost:8000/api/video", {
             method: "POST",
             body: formData,
           });
           const response_photos = await fetch('http://localhost:8000/api/video/image')
-          console.log(response_photos.body)
+          const body = await response_photos.json()
+          body.images.map((image) => {
+            addPhoto(image)
+          })
 
 
           if (!response.ok) {
@@ -48,7 +52,7 @@ const VideoDetect = ({videoFile, addPhoto}) => {
             {isLoading
                 ? <Loader/>
                 :
-                        <div>{videoSrc && <video controls src={videoSrc}/>}</div>
+                        <div>{videoSrc && <video autoPlay controls src={videoSrc}/>}</div>
 
 
             }

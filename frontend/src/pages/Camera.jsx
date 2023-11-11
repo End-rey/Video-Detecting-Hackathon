@@ -8,6 +8,8 @@ import NoCamera from "../components/noCamera/NoCamera";
 import cl from "../components/UI/navbar/Navbar.module.css";
 import {Link} from "react-router-dom";
 import MyButton from "../components/UI/button/MyButton";
+import { v4 as uuidv4 } from 'uuid';
+
 
 import CameraDetect from "../components/CameraDetect/CameraDetect";
 import CameraNavbar from "../components/UI/navbar/CameraNavbar";
@@ -55,7 +57,7 @@ function Camera() {
 
 
   const addPhoto = (photo) => {
-    setDangPhotoArr(prevDangPhotoArr => [...prevDangPhotoArr, {'id': photo.id, 'image': `data:image/jpeg;base64,${photo.image}`}]);
+    setDangPhotoArr(prevDangPhotoArr => [...prevDangPhotoArr, {'id': uuidv4(), 'box': photo.box,  'image': `data:image/jpeg;base64,${photo.image}`}]);
   }
 
 
@@ -74,7 +76,7 @@ function Camera() {
             : <h1 style={{marginTop:'10vh'}}>Камеры пока нет...</h1>
         }
 
-        <CameraEvents dangPhotoArray={dangPhotoArr}/>
+        <CameraEvents setDangPhotoArr={setDangPhotoArr} dangPhotoArray={dangPhotoArr}/>
 
 
         <MyModal visible={modal} setVisible={setModal}>
