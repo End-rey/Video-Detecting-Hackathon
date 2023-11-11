@@ -4,3 +4,7 @@ runs
 api_key.txt
 yolov8n.pt
 yolov8n-pose.pt
+data.yaml
+video_gun_gunner_labels.json
+video_labels.json
+pose_estim_model.ipynb
